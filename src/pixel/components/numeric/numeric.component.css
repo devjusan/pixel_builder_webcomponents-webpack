@@ -1,0 +1,44 @@
+widget-numeric {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background: var(--pixel-background-color);
+
+  padding: 10px;
+}
+
+widget-numeric p {
+  font-size: 12px;
+  margin: 4px 0 10px 0;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+widget-numeric input {
+  padding: 6px;
+  font-size: 12px;
+  width: 100%;
+
+  border: none;
+  border-radius: 5px;
+}
+
+widget-numeric input::placeholder {
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+widget-numeric span {
+  text-align: center;
+  margin-top: 3px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

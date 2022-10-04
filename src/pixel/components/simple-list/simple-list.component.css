@@ -1,0 +1,117 @@
+widget-simple-list {
+  position: relative;
+  background: var(--pixel-background-color);
+}
+
+widget-simple-list widget-base-panel {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+}
+
+widget-simple-list header {
+  height: 90px;
+
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+widget-simple-list input[type]::placeholder {
+  text-align: start;
+}
+
+widget-simple-list ul {
+  overflow-y: auto;
+}
+
+widget-simple-list ul input {
+  padding: 2px;
+  font-size: 12px;
+  width: 80%;
+  border: none;
+  border-radius: 5px;
+  color: var(--text-secondary);
+}
+
+widget-simple-list .header-panel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 7.5px;
+  overflow: hidden;
+}
+
+widget-simple-list .header-panel app-icon {
+  align-self: center;
+  margin-top: 32px;
+  margin-right: 10px;
+}
+
+widget-simple-list .header-panel .component-slot > * {
+  padding: 0 !important;
+}
+
+widget-simple-list .component-slot {
+  padding: 7px 10px;
+
+  width: 100%;
+}
+
+widget-simple-list ul {
+  height: 100%;
+
+  padding: 7px 10px;
+}
+
+widget-simple-list h1 {
+  display: inline-flex;
+
+  font-size: 12px;
+  font-weight: normal;
+  color: var(--text-primary);
+}
+
+widget-simple-list li .item-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5px 8px;
+}
+
+widget-simple-list ul li:not(:last-child) .item-panel {
+  border-bottom: none !important;
+}
+
+widget-simple-list li widget-base-panel {
+  outline: none !important;
+}
+
+widget-simple-list li,
+widget-simple-list ul,
+widget-simple-list h5 {
+  width: 100%;
+}
+
+widget-simple-list li {
+  list-style: none;
+}
+
+widget-simple-list button {
+  background: fixed;
+  outline: none;
+  border: none;
+}
+
+widget-simple-list button,
+widget-simple-list app-icon {
+  cursor: pointer;
+}
+
+widget-simple-list app-icon {
+  margin-top: 3px;
+  margin-left: 8px;
+}

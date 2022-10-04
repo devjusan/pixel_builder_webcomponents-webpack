@@ -1,0 +1,146 @@
+widget-map {
+  position: relative;
+  background: var(--pixel-background-color);
+}
+
+widget-map .map-component {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--pixel-background-color);
+
+  overflow: auto;
+}
+
+widget-map .entries-slot {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  overflow: hidden;
+  max-height: 100%;
+  transition: max-height 0.3s ease-in-out;
+}
+
+widget-map .entries-slot-item {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+}
+
+widget-map .entries-slot-item button {
+  max-width: 180px;
+}
+
+widget-map .container-list {
+  max-height: 150px;
+  overflow: auto;
+}
+
+widget-map h1,
+widget-map h2 {
+  margin: 1rem 2rem;
+  margin-bottom: 0;
+}
+
+widget-map .entries-box {
+  margin: 1rem 2rem;
+  margin-top: 0;
+  max-height: 100%;
+}
+
+widget-map .entries-box.hide {
+  max-height: 0%;
+}
+
+widget-map .entries-box input {
+  padding: 0.25rem 0;
+}
+
+widget-map .entry-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  margin-left: 1rem;
+}
+
+widget-map .entry-item span {
+  cursor: default;
+  font-size: 13.5px;
+  width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+widget-map .entry-item pixel-app-icon {
+  cursor: pointer;
+}
+
+widget-map .print-container {
+  padding: 10px 20px;
+}
+
+widget-map .print {
+  margin-left: 20px;
+  font-size: 17.5px;
+  font-weight: 700;
+}
+
+widget-map app-pixel-input-block input {
+  display: block;
+  max-width: 225px !important;
+  margin-top: 7.5px !important;
+  padding-left: 15px !important;
+}
+
+widget-map .input-print-name input,
+widget-map .input-print-name label {
+  margin-top: 25px;
+  margin-left: 25px;
+}
+
+widget-map .entries-box {
+  color: black;
+  font-size: 12px;
+  line-height: 30px;
+}
+
+widget-map .entries-added-list {
+  position: relative;
+}
+
+widget-map .hide-btn {
+  margin-left: 20px;
+}
+
+widget-map span {
+  display: block;
+  cursor: pointer;
+  color: blueviolet;
+  font-weight: 600;
+}
+
+widget-map .opacity {
+  opacity: 0.5;
+}
+
+widget-map .ordenate {
+  cursor: move !important;
+}
+
+widget-map .on-error {
+  color: #f4282d !important;
+  padding: 0.5rem 0;
+}
+
+widget-map.hide .entries-slot {
+  max-height: 0;
+}
+
+widget-map .hide-error {
+  display: none;
+}
+
+widget-map .show-error {
+  display: block;
+}

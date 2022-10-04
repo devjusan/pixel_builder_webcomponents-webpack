@@ -1,0 +1,10 @@
+widget-page {
+  height: 100%;
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--grid-cell-width));
+  grid-template-rows: repeat(auto-fill, var(--grid-cell-height));
+  grid-gap: var(--grid-gap);
+  padding: var(--grid-padding);
+}

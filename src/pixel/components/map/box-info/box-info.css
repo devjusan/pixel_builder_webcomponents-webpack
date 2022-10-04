@@ -1,0 +1,43 @@
+app-box-info {
+  display: block;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 200px;
+  padding: 1rem;
+  z-index: 8000;
+  border-radius: 3px;
+  max-height: 100%;
+  transition: max-height 0.3s ease-in-out, width 0.3s ease-in-out 0.2s;
+}
+
+app-box-info pixel-app-icon {
+  justify-content: flex-end;
+  display: flex;
+  cursor: pointer;
+}
+
+app-box-info .box-info-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+app-box-info li {
+  display: flex;
+  align-items: center;
+  gap: 12.5px;
+  list-style: none;
+  margin-bottom: 0.5rem;
+}
+
+app-box-info li h4 {
+  color: white;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+app-box-info li span {
+  width: 25px;
+  height: 15px;
+}

@@ -1,0 +1,31 @@
+widget-time {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background: var(--pixel-background-color);
+
+  padding: 10px;
+}
+
+widget-time p {
+  font-size: 12px;
+  margin: 4px 0 10px 0;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+widget-time input {
+  text-align: center;
+  padding: 3.705px;
+  font-size: 12px;
+  width: 100%;
+
+  border: none;
+  border-radius: 5px;
+}

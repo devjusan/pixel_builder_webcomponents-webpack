@@ -1,0 +1,35 @@
+widget-multi-line-text {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background: var(--pixel-background-color);
+
+  padding: 10px;
+}
+
+widget-multi-line-text p {
+  font-size: 12px;
+  margin: 4px 0 10px 0;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+widget-multi-line-text textarea {
+  font-size: 12px;
+  padding: 6px;
+
+  border: none;
+  resize: vertical;
+  width: 100%;
+  height: auto;
+  flex: 1;
+
+  border-radius: 5px;
+}

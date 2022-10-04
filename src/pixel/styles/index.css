@@ -1,0 +1,61 @@
+:root {
+  font-size: 10px;
+}
+
+:not(h1, h2, h3, strong, b) {
+  font-weight: 500;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  text-shadow: rgba(0, 0, 0, 0.01) 0 0 0.1rem;
+}
+
+*,
+body,
+button {
+  font-family: var(--fontFamily-primary);
+  color: var(--text-primary);
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-size: 1.2rem;
+}
+
+widget-stage input[type='number'],
+input[type='date'],
+widget-stage input[type='time'] {
+  font-family: var(--fontFamily-secondary) !important;
+  font-weight: normal !important;
+}
+
+widget-stage :not(input) input,
+widget-stage textarea {
+  color: var(--text-secondary);
+}
+
+widget-stage input::-webkit-calendar-picker-indicator {
+  filter: opacity(60%);
+}
+
+widget-stage h1 {
+  font-size: 2.4rem;
+}
+
+widget-stage h2 {
+  font-size: 1.8rem;
+}
+
+widget-stage h3,
+widget-stage h3 a {
+  font-size: 1.6rem;
+}
+
+widget-stage a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: normal;
+}
+

@@ -1,0 +1,35 @@
+app-map-component-helper {
+  height: 280px;
+  width: 540px;
+
+  border-radius: 2.5px;
+
+  background: var(--background-primary);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  padding: 15px 60px;
+}
+
+app-map-component-helper .map-component-helper-list {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+app-map-component-helper app-pixel-input-block {
+  width: 100px;
+}
+
+app-map-component-helper .title {
+  color: #550073;
+  white-space: break-spaces;
+  text-align: center;  
+  font-size: 1.7rem;
+}
+

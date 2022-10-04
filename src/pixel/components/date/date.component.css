@@ -1,0 +1,31 @@
+widget-date {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background: var(--pixel-background-color);
+
+  padding: 10px;
+}
+
+widget-date p {
+  font-size: 12px;
+  margin: 4px 0 10px 0;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+widget-date input {
+  text-align: center;
+  width: 100%;
+  padding: 3.705px;
+  font-size: 12px;
+
+  border: none;
+  border-radius: 5px;
+}

@@ -1,0 +1,93 @@
+app-storage-selector {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto;
+}
+
+app-storage-selector #pagination {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  padding-bottom: 20px;
+}
+
+app-storage-selector #pagination button {
+  border: 0;
+  background: transparent;
+  outline: 0;
+  cursor: pointer;
+
+  transition: all 0.2s ease-in-out;
+}
+
+app-storage-selector #pagination button:disabled {
+  cursor: unset;
+  opacity: 0.2;
+}
+
+app-storage-selector ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2px;
+
+  max-height: 100px;
+  margin-left: 8px;
+  margin-bottom: 20px;
+  list-style: none;
+}
+
+app-storage-selector ul li {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-items: flex-start;
+  gap: 8px;
+  padding: 0px 2px;
+  padding-bottom: 8px;
+  cursor: pointer;
+
+  color: var(--color-primary, #550073) !important;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+app-storage-selector ul li.has-item {
+  font-size: 12.5px;
+  font-weight: 600;
+  padding-top: 2px;
+}
+
+app-storage-selector h4 {
+  color: var(--color-primary, #550073);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+app-storage-selector .storages-title {
+  font-weight: bold;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 1rem;
+  padding-top: 0;
+}
+
+app-storage-selector .stack-navigator-item {
+  width: 100% !important;
+  height: 100% !important;
+  overflow-y: auto !important;
+}
+
+app-storage-selector .selected-storage-box {
+  padding: 1rem;
+}
+
+app-storage-selector .selected-storage {
+  font-weight: 700;
+}

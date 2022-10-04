@@ -1,0 +1,18 @@
+widget-note {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  background: var(--pixel-background-color);
+
+  padding: 10px;
+}
+
+widget-note p {
+  margin: 4px 0 10px 0;
+  font-size: 12px;
+  word-break: break-all;
+  overflow-y: auto;
+}

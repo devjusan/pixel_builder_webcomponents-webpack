@@ -1,0 +1,120 @@
+app-pixel-input-block[variant='primary'] {
+  display: flex;
+  flex-direction: column;
+}
+
+app-pixel-input-block label {
+  position: relative;
+  width: 100%;
+  display: flex;
+  white-space: nowrap;
+}
+
+app-pixel-input-block app-tooltip {
+  display: none;
+}
+
+app-pixel-input-block[with-tooltip] app-tooltip {
+  display: block;
+}
+
+app-pixel-input-block[variant='primary'][readonly] {
+  user-select: none;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+app-pixel-input-block[variant='primary'] label {
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  line-height: 3rem;
+}
+
+app-pixel-input-block[variant='primary'] input::placeholder {
+  color: var(--text-secondary);
+}
+
+app-pixel-input-block[variant='primary'] input.shortened {
+  width: 6rem;
+  text-align: center;
+  padding: 0.9rem 0.3rem;
+  margin: 0 1rem;
+}
+
+app-pixel-input-block[variant='primary'].secondary,
+app-pixel-input-block.secondary[variant='primary'] {
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+app-pixel-input-block[variant='primary'].secondary label,
+app-pixel-input-block.secondary[variant='primary'] label {
+  line-height: normal;
+}
+
+app-pixel-input-block[variant='secondary'] input {
+  border: none;
+
+  width: 100%;
+  margin-top: 3.4rem;
+}
+
+app-pixel-input-block[variant='secondary'] input:hover {
+  border: none;
+}
+
+app-pixel-input-block[variant='secondary'] input:focus {
+  border: none;
+}
+
+app-pixel-input-block[variant='secondary'] input:focus-visible {
+  outline: none;
+  border: none;
+}
+
+/* third */
+
+app-pixel-input-block[variant='third'] input {
+  border: none;
+
+  width: 100%;
+  margin-top: 3.4rem;
+}
+
+app-pixel-input-block[variant='third'] input:hover {
+  border: none;
+}
+
+app-pixel-input-block[variant='third'] input:focus {
+  border: none;
+}
+
+app-pixel-input-block[variant='third'] input:focus-visible {
+  outline: none;
+  border: none;
+}
+
+app-pixel-input-block[variant='third'] input {
+  border-bottom: 0.2rem solid var(--color-secondary-shadow);
+  margin-top: 2.5rem;
+  width: 100%;
+  height: 3.2rem;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+}
+
+app-pixel-input-block[variant='third'] input::placeholder {
+  color: var(--text-secondary);
+  size: 1.2rem;
+  font-weight: 500;
+  font-style: italic;
+}
+
+app-pixel-input-block[variant='third'] input:hover,
+app-pixel-input-block[variant='third'] input:focus {
+  border-bottom: 0.2rem solid var(--border-hover);
+}
+
+app-pixel-input-block[variant='third'] input:focus::placeholder {
+  color: var(--color-secondary);
+}

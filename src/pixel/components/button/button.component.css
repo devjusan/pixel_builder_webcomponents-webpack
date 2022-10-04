@@ -1,0 +1,25 @@
+widget-button {
+  position: relative;
+
+  background: var(--pixel-background-color);
+
+  overflow: hidden;
+}
+
+widget-button .button {
+  width: 100%;
+  height: 100%;
+  padding: 0 20px;
+  background: var(--color-secondary-dark);
+  color: var(--background-primary);
+  border-radius: 5px;
+  border: none;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+widget-button h3 {
+  padding: 1rem;
+}

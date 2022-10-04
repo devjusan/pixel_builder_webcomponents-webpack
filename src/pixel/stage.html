@@ -1,0 +1,39 @@
+<pixel-dialogs-container></pixel-dialogs-container>
+
+<header class="stage__header">
+  <div class="chevron-icon-wrapper">
+    <pixel-app-icon
+      class="chevron-icon up"
+      icon="chevron-down"
+      size="16"
+      fill="var(--background-primary)"
+    ></pixel-app-icon>
+  </div>
+  <div class="icon-close-wrapper">
+    <pixel-app-icon class="icon-close" icon="icon-close" size="16" fill="var(--background-primary)"></pixel-app-icon>
+  </div>
+
+  <div class="widget-icon-wrapper">
+    <pixel-app-icon class="widget-icon" icon="star" size="30" fill="var(--background-primary)"></pixel-app-icon>
+  </div>
+  <label></label>
+  <div class="actions-container"></div>
+</header>
+<div class="stage-container">
+  <div class="stage-content-container-wrapper">
+    <form class="stage-content-container"></form>
+  </div>
+  <footer id="pagination">
+    <button id="prev-page">
+      <pixel-app-icon icon="chev-arrow-left" size="25"></pixel-app-icon>
+    </button>
+    <div class="center">
+      <div id="current-page" class="pager"></div>
+      <span>-</span>
+      <div id="max-page" class="pager"></div>
+    </div>
+    <button id="next-page">
+      <pixel-app-icon icon="chev-arrow-right" size="25"></pixel-app-icon>
+    </button>
+  </footer>
+</div>

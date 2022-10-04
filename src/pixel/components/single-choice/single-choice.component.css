@@ -1,0 +1,75 @@
+widget-single-choice {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background: var(--pixel-background-color);
+
+  padding: 10px;
+}
+
+widget-single-choice p {
+  font-size: 12px;
+  margin: 4px 0 10px 0;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+widget-single-choice #input-container {
+  overflow-x: auto;
+  width: 100%;
+}
+
+widget-single-choice label {
+  margin: 10px 0;
+  display: flex;
+  position: relative;
+  cursor: pointer;
+  padding-left: 25px;
+
+  font-size: 12px;
+}
+
+widget-single-choice input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+widget-single-choice span {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-58%);
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  border: 1px solid var(--background-primary);
+  background: var(--background-primary);
+}
+
+widget-single-choice span:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-secondary-dark);
+
+  display: none;
+}
+
+widget-single-choice input:checked ~ .check-mark:after {
+  display: block;
+}

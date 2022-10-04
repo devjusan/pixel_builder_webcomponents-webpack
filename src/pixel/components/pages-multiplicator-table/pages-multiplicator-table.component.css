@@ -1,0 +1,71 @@
+widget-pages-multiplicator-table {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background: var(--pixel-background-color);
+
+  padding: 10px;
+}
+
+widget-pages-multiplicator-table h3 {
+  font-weight: bold;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+widget-pages-multiplicator-table p {
+  font-size: 12px;
+  margin: 4px 0 10px 0;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+widget-pages-multiplicator-table td,
+widget-pages-multiplicator-table th {
+  font-size: 12px;
+  line-height: 24px;
+
+  max-width: 0;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+widget-pages-multiplicator-table table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+widget-pages-multiplicator-table td,
+th {
+  font-weight: normal;
+  color: var(--pixel-text-color);
+  border: 1px solid var(--pixel-text-color);
+  text-align: center;
+  padding: 8px;
+}
+
+widget-pages-multiplicator-table input {
+  background: inherit;
+  border: none;
+  height: 100%;
+  width: 100%;
+  color: var(--text-primary) !important;
+}
+
+
+widget-pages-multiplicator-table .button {
+  margin-top: 15px !important;
+  background: var(--color-secondary-dark) !important;
+  color: var(--background-primary) !important;
+  max-width: 290px !important;
+}

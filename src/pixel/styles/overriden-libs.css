@@ -1,0 +1,70 @@
+.toast {
+  font-family: 'Raleway', 'OpenSans' !important;
+  width: 60rem !important;
+  padding: 2rem !important;
+  background-position: 3rem !important;
+  opacity: 1 !important;
+}
+
+#toast-container > div {
+  opacity: 1 !important;
+}
+
+#toast-container > .toast-warning,
+#toast-container > .toast-error {
+  background-image: url('./assets/toasts/error-icon.svg') !important;
+}
+
+.toast-warning {
+  background-color: var(--status-on-hold) !important;
+}
+
+.toast-error {
+  background-color: var(--status-inactive) !important;
+}
+
+.toast-success {
+  background-color: var(--status-active) !important;
+}
+
+.toast-title,
+.toast-message {
+  color: var(--background-primary) !important;
+  margin-left: 6.5rem !important;
+}
+
+.toast-message {
+  font-size: 1.6rem !important;
+}
+
+.toast-title {
+  font-size: 2rem !important;
+  font-weight: 500 !important;
+  line-height: 4rem !important;
+}
+
+/*
+  jquery-resizable - fix
+  previous: {
+    bottom: -2px;
+  }
+  it messed with overflow calcs
+*/
+.ui-resizable-s {
+  bottom: 0px;
+}
+
+.ui-resizable-e {
+  right: 0px;
+}
+
+/* ck editor */
+
+.ck-content * {
+  font-family: unset;
+  color: unset;
+  padding: unset;
+  margin: unset;
+  font-size: unset;
+  box-sizing: unset;
+}

@@ -1,0 +1,43 @@
+pixel-dialogs-default {
+  height: 24rem;
+  width: 54rem;
+
+  border-radius: 1.5rem;
+
+  background: var(--background-primary);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  padding: 1.5rem 6rem;
+}
+
+pixel-dialogs-default .title,
+pixel-dialogs-default .description {
+  color: var(--text-primary);
+  white-space: break-spaces;
+  text-align: center;
+}
+
+pixel-dialogs-default .description {
+  font-size: 1.7rem;
+}
+
+pixel-dialogs-default .action-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+pixel-dialogs-default .action-buttons button {
+  width: 10rem;
+}
+
+pixel-dialogs-default .button.borderless {
+  border: 0;
+  background: transparent;
+  color: var(--text-primary);
+  padding: 0;
+  outline: 0;
+}

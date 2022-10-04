@@ -1,0 +1,207 @@
+widget-stage {
+  display: block;
+}
+
+widget-stage > header {
+  position: relative;
+  height: 60px;
+
+  background: var(--pixel-header-background-color);
+  border-radius: 10px 10px 0 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+widget-stage > header label {
+  margin-top: 22px;
+  color: var(--background-primary);
+  font-size: 12px;
+}
+
+widget-stage > header .widget-icon-wrapper {
+  position: absolute;
+  top: -60%;
+
+  padding: 13px;
+
+  background: var(--pixel-header-background-color);
+  border-radius: 50%;
+  border: 2px solid var(--background-primary);
+}
+
+widget-stage > header .chevron-icon-wrapper {
+  position: absolute;
+  cursor: pointer;
+
+  top: 50%;
+  left: 30px;
+  transform: translateY(-50%);
+}
+
+widget-stage > header .icon-close-wrapper {
+  position: absolute;
+  cursor: pointer;
+
+  top: 50%;
+  left: 65px;
+  transform: translateY(-50%);
+}
+
+widget-stage > header .icon-minimize-wrapper {
+  position: absolute;
+  cursor: pointer;
+
+  top: 50%;
+  left: 58px;
+  transform: translateY(-50%);
+}
+
+widget-stage > header .icon-minimize-wrapper path {
+  fill: white;
+}
+
+widget-stage > header .chevron-icon.up svg {
+  transform: rotate(180deg);
+}
+
+widget-stage > header .actions-container {
+  display: flex;
+  gap: 2rem;
+  position: absolute;
+  right: 2.5rem;
+}
+
+widget-stage .stage-container {
+  display: flex;
+  flex-direction: column;
+
+  height: calc(100% - 60px);
+  overflow: hidden;
+
+  max-height: 100%;
+  transition: max-height 200ms ease;
+}
+
+widget-stage .stage-content-container-wrapper {
+  position: relative;
+
+  width: 100%;
+  height: calc(100% - 60px);
+}
+
+widget-stage .stage-content-container-wrapper button {
+  cursor: pointer;
+}
+
+widget-stage .stage-content-container {
+  background: var(--pixel-background-color);
+
+  height: 100%;
+  width: 100%;
+
+  overflow: hidden;
+
+  transition: opacity 0.3s linear;
+  opacity: 1;
+}
+
+widget-stage .stage-container.invisible {
+  max-height: 0;
+}
+
+widget-stage footer {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--pixel-background-color);
+  height: 60px;
+  overflow: hidden;
+}
+
+widget-stage footer button {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  outline: 0;
+  cursor: pointer;
+}
+
+widget-stage footer button:disabled {
+  cursor: unset;
+  opacity: 0.2;
+}
+
+widget-stage footer .center {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+widget-stage footer .center span {
+  margin: 0 2px;
+}
+
+widget-stage footer .pager {
+  font-size: 12px;
+  font-family: var(--fontFamily-secondary);
+}
+
+widget-stage p,
+widget-stage h3,
+widget-stage label {
+  color: var(--pixel-text-color);
+}
+
+widget-stage.no-modal {
+  z-index: 10000;
+}
+
+.tabs-navigator-parent,
+.stack-navigator-parent {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.tab-navigator-item {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+}
+
+.stack-navigator-item {
+  transition: transform 400ms ease;
+  transform: translateX(0);
+  overflow: hidden;
+}
+
+.stack-navigator-item.build-heap:not(.build-heap-exception) {
+  transition-duration: 0ms;
+}
+
+.mention {
+  font-weight: bold !important;
+}
+
+.btn-changer button:not(#pagination button) {
+  max-height: 32px !important;
+  width: 200px !important;
+  margin-left: 10px !important;
+  margin-top: 10px !important;
+}
+
+.btn-changer {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.pass-through-load .button {
+  display: none;
+}

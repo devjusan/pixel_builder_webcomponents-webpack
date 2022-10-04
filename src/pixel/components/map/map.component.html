@@ -1,0 +1,28 @@
+<button type="button" class="button btn-primary hide-btn">Ocultar entradas</button>
+<article class="map-component">
+  <div class="entries-slot">
+    <div class="entries-slot-item">
+      <h1 class="title"></h1>
+      <div class="entries-box"></div>
+      <button type="button" class="button btn-primary print">Adicionar print</button>
+      <app-pixel-input-block
+        variant="third"
+        title="Nome do print"
+        input.placeholder="Digite o nome..."
+        class="input-print-name"
+      ></app-pixel-input-block>
+    </div>
+    <div class="entries-slot-item">
+      <h2>Adicionado ao mapa</h2>
+      <div class="entries-added-list scrollbar scrollable container-list"></div>
+      <h2>Lista de prints</h2>
+      <div class="print-container-list scrollbar scrollable container-list"></div>
+    </div>
+  </div>
+
+  <app-map-initializer id="map-container map-instance"></app-map-initializer>
+
+  <h2>Print atual</h2>
+  <img src="" alt="Imagem do mapa" class="print-container" />
+</article>
+

@@ -1,0 +1,38 @@
+pixel-modals-container {
+  display: none;
+}
+
+pixel-modals-container.active {
+  display: block;
+
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+}
+
+pixel-modals-container .backdrop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10001;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+pixel-modals-container .content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 10002;
+}
+
+pixel-modals-container .modal-view {
+  position: absolute !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

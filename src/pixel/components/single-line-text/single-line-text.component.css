@@ -1,0 +1,37 @@
+widget-single-line-text {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background: var(--pixel-background-color);
+
+  padding: 10px;
+}
+
+widget-single-line-text p {
+  font-size: 12px;
+  margin: 4px 0 10px 0;
+
+  color: var(--pixel-text-color);
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+widget-single-line-text input {
+  padding: 6px;
+  font-size: 12px;
+  width: 100%;
+
+  border: none;
+  border-radius: 5px;
+}
+
+widget-single-line-text input::placeholder {
+  color: var(--text-secondary);
+  text-align: center;
+}

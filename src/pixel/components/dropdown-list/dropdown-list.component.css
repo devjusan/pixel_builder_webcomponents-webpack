@@ -1,0 +1,33 @@
+widget-dropdown-list {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background: var(--pixel-background-color);
+
+  padding: 10px;
+}
+
+widget-dropdown-list p {
+  font-size: 12px;
+  margin: 4px 0 10px 0;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+widget-dropdown-list select,
+widget-dropdown-list option {
+  text-align: center;
+  padding: 6px;
+  font-size: 12px;
+  width: 100%;
+
+  border: none;
+  border-radius: 5px;
+  background-color: var(--background-primary);
+}

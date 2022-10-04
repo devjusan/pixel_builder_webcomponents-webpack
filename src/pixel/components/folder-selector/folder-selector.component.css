@@ -1,0 +1,59 @@
+widget-folder-selector {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background: var(--pixel-background-color);
+
+  padding: 10px;
+}
+
+widget-folder-selector p {
+  font-size: 12px;
+  margin: 4px 0 10px 0;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+widget-folder-selector #input-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+widget-folder-selector input {
+  padding: 6px;
+  font-size: 12px;
+
+  border: none;
+  border-radius: 5px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+widget-folder-selector input[type='file'] {
+  display: none;
+}
+
+widget-folder-selector label {
+  margin-left: 10px;
+
+  background: var(--color-secondary-dark);
+  padding: 5px 20px;
+  color: var(--background-primary);
+  border-radius: 5px;
+  border: 1px solid var(--border-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-family: Roboto, sans-serif;
+}

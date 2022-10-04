@@ -1,0 +1,37 @@
+widget-image-stage {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  background: var(--pixel-background-color);
+
+  padding: 10px;
+}
+
+widget-image-stage h3 {
+  font-weight: bold;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+widget-image-stage p {
+  font-size: 12px;
+  margin: 4px 0 10px 0;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+widget-image-stage .image-container {
+  width: 100%;
+}
+
+widget-image-stage img {
+  display: none;
+  width: 100%;
+  object-fit: contain;
+}
