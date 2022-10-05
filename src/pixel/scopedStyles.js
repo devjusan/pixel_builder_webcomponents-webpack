@@ -1,4 +1,4 @@
-export default async function scopedStyles(container) {
+export default function scopedStyles(container) {
   const style = document.createElement("style");
   style.innerHTML = ` 
     :root {

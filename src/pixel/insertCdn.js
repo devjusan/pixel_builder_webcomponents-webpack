@@ -20,22 +20,6 @@ const scriptList = [
     src: "https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css",
   },
   {
-    type: "link",
-    src: `./styles/ui.css`,
-  },
-  {
-    type: "link",
-    src: `./styles/index.css`,
-  },
-  {
-    type: "link",
-    src: `./styles/overriden-libs.css`,
-  },
-  {
-    type: "link",
-    src: `./styles/vars.css`,
-  },
-  {
     type: "script",
     src: "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js",
   },

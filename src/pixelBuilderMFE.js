@@ -18,7 +18,7 @@ const app = {
         const stageEl = document.createElement("widget-stage");
         stageEl.id = "pixelbuilder_valuation";
 
-        await scopedStyles(container);
+        scopedStyles(container);
         container.appendChild(stageEl);
       });
     });
