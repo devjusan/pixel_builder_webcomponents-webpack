@@ -8,13 +8,13 @@ const path = require("path");
 const deps = require("./package.json").dependencies;
 
 module.exports = ({ env }, argv) => ({
-  entry: path.resolve(__dirname, "src/index.js"),
-  output: {
-    filename: "[name].bundle.js",
-    path: path.resolve(__dirname, "dist"),
-    scriptType: "text/javascript",
+  entry: {
+    main: "./src/index.js",
   },
-
+  output: {
+    filename: "[name].[fullhash].js",
+    path: path.resolve(__dirname, "dist"),
+  },
   target: "web",
   resolve: {
     extensions: [".js", ".html", ".css"],
@@ -59,11 +59,11 @@ module.exports = ({ env }, argv) => ({
     new CleanWebpackPlugin(),
     new WebpackManifestPlugin(),
     new ModuleFederationPlugin({
-      name: "PxValuation",
+      name: "PixelBuilderValuation",
       filename: "remoteEntry.js",
-      remotes: {},
       exposes: {
-        PxValuation: "./src/pixelBuilderMFE.js",
+        PixelBuilderValuation: "./src/pixelBuilderMFE.js",
+        "./PixelBuilderValuation": "./src/pixelBuilderMFE.js",
       },
       shared: { ...deps },
     }),
@@ -88,5 +88,6 @@ module.exports = ({ env }, argv) => ({
   ],
   optimization: {
     minimize: argv.mode === "production",
+    // runtimeChunk: "single",
   },
 });

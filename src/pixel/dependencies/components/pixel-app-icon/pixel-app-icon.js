@@ -121,6 +121,9 @@ export default class AppIcon extends WebComponent {
         rxjs.operators.mergeMap((res) => res.text()),
         rxjs.operators.map((iconStr) => {
           const iconEl = this.#strElementToHtmlElement(iconStr);
+
+          if (!iconEl) return document.createElement("div");
+
           iconEl.querySelectorAll("*").forEach((path) => {
             path.classList.remove("a");
           });

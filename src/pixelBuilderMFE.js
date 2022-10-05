@@ -1,3 +1,5 @@
+import scopedStyles from "./pixel/scopedStyles.js";
+
 const app = {
   use(plugin, widgetInstance) {
     console.log("has been tryied to install plugin", plugin, widgetInstance);
@@ -9,15 +11,15 @@ const app = {
 
     wrapper.appendChild(pixelBuilderContainer);
 
-    import("./pixel/insertCdn.js").then(() => {
-      import("./index.js").then(async () => {
-        await import("./pixel/modules.js").then(() => {
-          const container = document.getElementById("pixel_builder_container");
-          const stageEl = document.createElement("widget-stage");
-          stageEl.id = "pixelbuilder_valuation";
+    import("./pixel/insertCdn.js").then(async () => {
+      await import("./index.js");
+      await import("./pixel/modules.js").then(async () => {
+        const container = document.getElementById("pixel_builder_container");
+        const stageEl = document.createElement("widget-stage");
+        stageEl.id = "pixelbuilder_valuation";
 
-          container.appendChild(stageEl);
-        });
+        await scopedStyles(container);
+        container.appendChild(stageEl);
       });
     });
   },

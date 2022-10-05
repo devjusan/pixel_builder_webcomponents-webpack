@@ -56,17 +56,14 @@ export default class Stage extends ModalAdapter {
 
   onInit() {
     this.toggleViewModeEl = this.querySelector(".chevron-icon");
-    this.headerEl = this.querySelector(".stage__header");
     this.headerIconEl = this.querySelector(".widget-icon");
     this.headerIconWrapperEl = this.querySelector(".widget-icon-wrapper");
     this.actionsContainerEl = this.querySelector(".actions-container");
-    this.headerTitleEl = this.querySelector(".stage__header > label");
     this.paginationEl = this.querySelector("#pagination");
     this.activePageViewEl = this.querySelector("#pagination  #current-page");
     this.maxPageEl = this.querySelector("#pagination #max-page");
     this.nextPageBtn = this.querySelector("#pagination #next-page");
     this.prevPageBtn = this.querySelector("#pagination #prev-page");
-    this.closePixelEl = this.querySelector(".icon-close-wrapper");
     this.interactiveContainerEl = this.querySelector(".stage-container");
     this.paginatorContainerEl = this.querySelector(".stage-content-container");
     this.stackNavigator = new StackNavigator(this.paginatorContainerEl, [
@@ -154,11 +151,6 @@ export default class Stage extends ModalAdapter {
       .subscribe(this.handleLoadButtonId.bind(this));
 
     rxjs
-      .fromEvent(this.toggleViewModeEl, "click")
-      .pipe(this.takeUntilLifeCycle())
-      .subscribe(this.handleToggleContent.bind(this));
-
-    rxjs
       .fromEvent(this.prevPageBtn, "click")
       .pipe(this.takeUntilLifeCycle())
       .subscribe(this.handlePrevPageNavigation.bind(this));
@@ -168,13 +160,7 @@ export default class Stage extends ModalAdapter {
       .pipe(this.takeUntilLifeCycle())
       .subscribe(this.handleNextPageNavigation.bind(this));
 
-    rxjs
-      .fromEvent(this.closePixelEl, "click")
-      .pipe(this.takeUntilLifeCycle())
-      .subscribe(this.handleClosePixel.bind(this));
-
     this.reloadIfCan();
-    this.#bindSortableIfCan();
   }
 
   handleToggleContent() {
@@ -387,10 +373,7 @@ export default class Stage extends ModalAdapter {
       variant: { borderRadius, backgroundColor, headerColor, textColor, size },
     } = props;
 
-    this.headerTitleEl.textContent = title;
-
     this.changePixelSize(size);
-    this.changePixelBorderRadius(borderRadius);
     this.changePixelBackgroundColor(backgroundColor);
     this.changePixelTextColor(textColor);
     this.changePixelHeaderBackgroundColor(headerColor);
@@ -407,17 +390,6 @@ export default class Stage extends ModalAdapter {
     this.style.setProperty("--grid-cell-height", `${unitSize.height}px`);
     this.paginatorContainerEl.style.setProperty("height", `${height}px`);
     this.paginatorContainerEl.style.setProperty("width", `${width}px`);
-  }
-
-  changePixelBorderRadius(borderRadius) {
-    this.headerEl.style.setProperty(
-      "border-radius",
-      `${borderRadius}px ${borderRadius}px 0 0`
-    );
-    this.interactiveContainerEl.style.setProperty(
-      "border-radius",
-      `0 0 ${borderRadius}px ${borderRadius}px`
-    );
   }
 
   changePixelBackgroundColor(backgroundColor) {
@@ -593,25 +565,6 @@ export default class Stage extends ModalAdapter {
       btnChanger.classList.remove("pass-through-load");
       storageSelector?.remove();
     }
-  }
-
-  #bindSortableIfCan() {
-    if (!this.noModal) return;
-
-    this.style.setProperty("position", "absolute");
-    const container =
-      document.getElementById("pixel-wrapper") ??
-      document
-        .querySelector("home-page")
-        ?.querySelector(".container-principal") ??
-      document.getElementById("root") ??
-      document.body;
-
-    $(container).sortable({
-      handle: ".stage__header",
-      tolerance: "pointer",
-      appendTo: document.body,
-    });
   }
 }
 
