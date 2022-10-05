@@ -230,7 +230,7 @@ export default class MapComponent extends ComponentAdapter {
       .fromEvent(this.hideBtnEl, "click")
       .pipe(this.takeUntilLifeCycle())
       .subscribe(() => {
-        this.classList.toggle("hide");
+        this.classList.toggle("hide-component");
         this.#handleBtnDescription();
       });
 
@@ -605,7 +605,7 @@ export default class MapComponent extends ComponentAdapter {
   }
 
   #handleBtnDescription() {
-    this.hideBtnEl.textContent = this.classList.contains("hide")
+    this.hideBtnEl.textContent = this.classList.contains("hide-component ")
       ? "Mostrar entradas"
       : "Ocultar entradas";
   }

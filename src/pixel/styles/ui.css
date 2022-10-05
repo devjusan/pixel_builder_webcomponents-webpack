@@ -177,7 +177,7 @@ label.input-checkbox input:checked ~ .check-mark:after {
 }
 
 .loader-instance-backdrop.show {
-  display: flex;
+  display: flex !important;
 }
 
 .loader-instance-backdrop.show-recall {

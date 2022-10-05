@@ -312,7 +312,7 @@ export default async function scopedStyles(container) {
       }
       
       .loader-instance-backdrop.show {
-        display: flex;
+        display: flex !important;
       }
       
       .loader-instance-backdrop.show-recall {

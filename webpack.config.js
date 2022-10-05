@@ -8,20 +8,23 @@ const path = require("path");
 const deps = require("./package.json").dependencies;
 
 module.exports = ({ env }, argv) => ({
-  entry: {
-    main: "./src/index.js",
-  },
+  entry: "./src/index.js",
   output: {
     filename: "[name].[fullhash].js",
     path: path.resolve(__dirname, "dist"),
   },
   target: "web",
   resolve: {
-    extensions: [".js", ".html", ".css"],
+    extensions: [".js", ".html", ".css", ".svg"],
+    alias: {
+      Assets: path.resolve(__dirname, "src/pixel/dependencies/assets"),
+    },
+    preferRelative: true,
   },
   devtool:
     argv.mode === "production" ? "cheap-source-map" : "inline-source-map",
   devServer: {
+    static: "./dist",
     devMiddleware: { writeToDisk: true },
     port: 8080,
     allowedHosts: "all",
@@ -53,6 +56,12 @@ module.exports = ({ env }, argv) => ({
         use: ["raw-loader"],
       },
       { test: /\.html$/, use: ["raw-loader"] },
+      {
+        test: /\.svg/,
+        use: {
+          loader: "svg-inline-loader",
+        },
+      },
     ],
   },
   plugins: [
