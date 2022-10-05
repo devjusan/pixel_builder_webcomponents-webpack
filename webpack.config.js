@@ -8,13 +8,13 @@ const path = require("path");
 const deps = require("./package.json").dependencies;
 
 module.exports = ({ env }, argv) => ({
-  entry: {
-    main: "./src/index.js",
-  },
+  entry: path.resolve(__dirname, "src/index.js"),
   output: {
-    filename: "[name].[fullhash].js",
+    filename: "[name].bundle.js",
     path: path.resolve(__dirname, "dist"),
+    scriptType: "text/javascript",
   },
+
   target: "web",
   resolve: {
     extensions: [".js", ".html", ".css"],
@@ -59,10 +59,11 @@ module.exports = ({ env }, argv) => ({
     new CleanWebpackPlugin(),
     new WebpackManifestPlugin(),
     new ModuleFederationPlugin({
-      name: "PixelBuilderValuation",
+      name: "PxValuation",
       filename: "remoteEntry.js",
+      remotes: {},
       exposes: {
-        "./Stage": "./src/index.js",
+        PxValuation: "./src/pixelBuilderMFE.js",
       },
       shared: { ...deps },
     }),
@@ -77,7 +78,7 @@ module.exports = ({ env }, argv) => ({
           to: "assets",
         },
         { from: "src/pixel/styles", to: "styles" },
-        { from: "src/pixel/insert-cdn.js", to: "insert-cdn.js" },
+        { from: "src/pixel/insertCdn.js", to: "insertCdn.js" },
         { from: "src/pixel/modules.js", to: "modules.js" },
       ],
     }),
@@ -87,6 +88,5 @@ module.exports = ({ env }, argv) => ({
   ],
   optimization: {
     minimize: argv.mode === "production",
-    runtimeChunk: "single",
   },
 });

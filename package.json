@@ -1,5 +1,5 @@
 {
-  "name": "pixel-builder",
+  "name": "pxValuation",
   "version": "1.0.0",
   "scripts": {
     "build": "webpack --mode production",
@@ -32,7 +32,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.13.10",
-    "node-polyfill-webpack-plugin": "^2.0.1",
-    "rxjs": "^7.5.7"
+    "node-polyfill-webpack-plugin": "^2.0.1"
   }
 }
