@@ -6,7 +6,7 @@ import {
   PixelWorkflowReportEntry,
   PixelUtils,
   ArrayUtils,
-} from '../index.js';
+} from "../index.js";
 
 export default class PixelExecuteReportUtils {
   /** @typedef {{report: PixelWorkflowReport, multiplicator: number}} PixelExecuteData */
@@ -15,8 +15,8 @@ export default class PixelExecuteReportUtils {
 
   /** @type {{PDF: 'pdf', BASE64: 'base64'}} */
   #FORMAT_TYPES = {
-    PDF: 'pdf',
-    BASE64: 'base64',
+    PDF: "pdf",
+    BASE64: "base64",
   };
 
   /** @type {number} */
@@ -28,7 +28,7 @@ export default class PixelExecuteReportUtils {
   /** @type {number} */
   ROWS = 0;
 
-  #MARKERS = { BREAKER: ';', TWO_POINTS: ':', E: '&' };
+  #MARKERS = { BREAKER: ";", TWO_POINTS: ":", E: "&" };
 
   /** @type {{idTemplate: number, format: 'pdf' | 'base64', parameters: string[] }} */
   #data;
@@ -73,7 +73,12 @@ export default class PixelExecuteReportUtils {
 
   /** @param {PixelExecuteData} */
   constructor({ report, multiplicator }) {
-    this.report = { ...report, entries: report.entries.filter((entry) => entry.token || entry.childrens.length > 0) };
+    this.report = {
+      ...report,
+      entries: report.entries.filter(
+        (entry) => entry.token || entry.childrens.length > 0
+      ),
+    };
     this.multiplicator = multiplicator;
   }
 
@@ -89,7 +94,9 @@ export default class PixelExecuteReportUtils {
     return outputService.generateOutput(this.data).pipe(
       rxjs.operators.map((response) => response.data),
       rxjs.operators.tap((data) => {
-        const pdfName = `relatorio-${this.report.title}-${this.report.externalId}-${_.random(0, 1000)}`;
+        const pdfName = `relatorio-${this.report.title}-${
+          this.report.externalId
+        }-${_.random(0, 1000)}`;
         this.#downloadPDF(data.base64, pdfName);
       }),
       rxjs.operators.tap(() => localLoaderService.unsetAll())
@@ -106,7 +113,7 @@ export default class PixelExecuteReportUtils {
 
   #downloadPDF(pdf, flName) {
     const linkSource = `data:application/pdf;base64,${pdf}`;
-    const downloadLink = document.createElement('a');
+    const downloadLink = document.createElement("a");
     const fileName = `${flName}.pdf`;
 
     downloadLink.href = linkSource;
@@ -143,7 +150,7 @@ export default class PixelExecuteReportUtils {
   #getPairVariableTable(entry) {
     const { text: firstRow, COLUMNS } = this.#ensureChildrensFirstRow(entry);
     const { text: rows, ROWS } = this.#ensureChildrensRowsTable(entry);
-    const tableSize = `${ROWS}x${COLUMNS + 1}`;
+    const tableSize = `${ROWS}x${COLUMNS}`;
     const variable = entry.title;
     const initialParam = `${variable}${this.MARKERS.TWO_POINTS}${tableSize}${this.MARKERS.BREAKER}`;
 
@@ -158,7 +165,7 @@ export default class PixelExecuteReportUtils {
   #getPairMap(entry) {
     const childrens = entry.childrens;
 
-    let multipleParam = '';
+    let multipleParam = "";
     let component = null;
     let rows = 0;
     for (let j = 0; j < childrens.length; j++) {
@@ -166,7 +173,7 @@ export default class PixelExecuteReportUtils {
       component = document.getElementById(child.token.id);
 
       if (PixelUtils.isValidComponentWithInternalMap(component)) {
-        component = component?.querySelector('widget-map');
+        component = component?.querySelector("widget-map");
       }
 
       const { text, size } = component.getPrintList(rows);
@@ -190,18 +197,18 @@ export default class PixelExecuteReportUtils {
   #getPairTable(entry) {
     const childrens = entry.childrens;
 
-    let multipleParam = '';
+    let multipleParam = "";
     let component = null;
     let rows = 0;
     let columns = 0;
     let inputListEl = [];
-    let head = '';
+    let head = "";
     for (let j = 0; j < childrens.length; j++) {
       const child = childrens[j];
       component = document.getElementById(child.token.id);
 
       if (PixelUtils.isValidComponentWithInternalTable(component)) {
-        component = component?.querySelector('widget-result-table');
+        component = component?.querySelector("widget-result-table");
         component.rowCounter = rows;
         component.withFillInputsValues(component.valuesList);
         inputListEl = component.getInputList();
@@ -254,10 +261,16 @@ export default class PixelExecuteReportUtils {
    * @param {PixelWorkflowReportEntry} entry
    */
   #ensureChildrensFirstRow(entry) {
-    const uniqChildrens = ArrayUtils.uniqBy([...entry.childrens], (child) => child.text);
+    const uniqChildrens = ArrayUtils.uniqBy(
+      [...entry.childrens],
+      (child) => child.text
+    );
     const table =
       uniqChildrens
-        .map((child, index) => `1${this.MARKERS.E}${index + 1}${this.MARKERS.E}${child.text}`)
+        .map(
+          (child, index) =>
+            `1${this.MARKERS.E}${index + 1}${this.MARKERS.E}${child.text}`
+        )
         .join(this.MARKERS.BREAKER) + this.MARKERS.BREAKER;
 
     return { text: table, COLUMNS: uniqChildrens.length };
@@ -279,23 +292,25 @@ export default class PixelExecuteReportUtils {
             .map((child, j) => {
               const component = document.getElementById(child.token.id);
               let text = null;
-              const isSelect = component?.querySelector('select');
+              const isSelect = component?.querySelector("select");
 
               if (isSelect) {
                 text = isSelect.options[isSelect.selectedIndex].value;
 
                 if (Number(text[0])) {
-                  text = text.split('.')[0];
+                  text = text.split(".")[0];
                 }
               } else {
                 text =
-                  component?.querySelector('textarea')?.value ??
-                  component?.querySelector('input')?.value ??
-                  component?.querySelector('p')?.innerText ??
-                  '';
+                  component?.querySelector("textarea")?.value ??
+                  component?.querySelector("input")?.value ??
+                  component?.querySelector("p")?.innerText ??
+                  "";
               }
 
-              return `${i + 2}${this.MARKERS.E}${j + 1}${this.MARKERS.E}${text.replace(';', '')}`;
+              return `${i + 2}${this.MARKERS.E}${j + 1}${
+                this.MARKERS.E
+              }${text.replace(";", "")}`;
             })
             .join(this.MARKERS.BREAKER)
         )
@@ -309,7 +324,10 @@ export default class PixelExecuteReportUtils {
    * @param {number} k
    */
   getValue(j, k) {
-    const value = this.childrens[j]?.[k]?.value ?? this.childrens[j]?.[k]?.innerText ?? ' - ';
+    const value =
+      this.childrens[j]?.[k]?.value ??
+      this.childrens[j]?.[k]?.innerText ??
+      " - ";
 
     return value;
   }

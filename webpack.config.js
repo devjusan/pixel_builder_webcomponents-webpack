@@ -97,6 +97,6 @@ module.exports = ({ env }, argv) => ({
   ],
   optimization: {
     minimize: argv.mode === "production",
-    // runtimeChunk: "single",
+    runtimeChunk: "single",
   },
 });

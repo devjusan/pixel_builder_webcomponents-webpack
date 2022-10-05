@@ -101,6 +101,8 @@ let hasBeenExecuted = false;
     } else {
       element.setAttribute("href", item.src);
       element.setAttribute("rel", "stylesheet");
+      element.setAttribute("type", "text/css");
+      element.setAttribute("crossorigin", "anonymous");
     }
 
     element.setAttribute("key", item.src);
