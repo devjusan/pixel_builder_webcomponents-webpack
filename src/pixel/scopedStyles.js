@@ -4,7 +4,7 @@ import overridenLibs from "./styles/overriden-libs.css";
 import vars from "./styles/vars.css";
 
 (function () {
-  const root = document.getElementById("pixelbuilder_valuation");
+  const root = document.getElementById("pixel_builder_container");
   const styles = [index, ui, overridenLibs, vars];
 
   styles.forEach((style) => {

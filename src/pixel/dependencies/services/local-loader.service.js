@@ -8,19 +8,19 @@ class LocalLoaderInstance {
   }
 
   setIsLoading() {
-    this.backdropEl.classList.add('show');
+    this.backdropEl.classList.add("show-loader");
   }
 
   unsetIsLoading() {
-    this.backdropEl.classList.remove('show');
+    this.backdropEl.classList.remove("show-loader");
   }
 
   loaderizeElement(element) {
-    this.backdropEl = document.createElement('div');
-    const loaderEl = document.createElement('pixel-loading-bars');
+    this.backdropEl = document.createElement("div");
+    const loaderEl = document.createElement("pixel-loading-bars");
 
-    element.style.setProperty('position', 'relative');
-    this.backdropEl.classList.add('loader-instance-backdrop');
+    element.style.setProperty("position", "relative");
+    this.backdropEl.classList.add("loader-instance-backdrop");
 
     this.backdropEl.append(loaderEl);
     element.append(this.backdropEl);

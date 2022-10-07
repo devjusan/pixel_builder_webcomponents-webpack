@@ -133,7 +133,7 @@ widget-map .on-error {
   padding: 0.5rem 0;
 }
 
-widget-map.hide .entries-slot {
+widget-map.hide-map .entries-slot {
   max-height: 0;
 }
 

@@ -1,13 +1,13 @@
-import * as Rxjs from 'rxjs';
+import * as Rxjs from "rxjs";
 
 const axiosInstance = axios.create({
-  baseURL: 'https://controlatpx.atfunctions.com/api/controlatpx',
+  baseURL: "https://controlatpx.atfunctions.com/api/controlatpx",
 });
 
 class HttpProgressEventImpl {
   get percent() {
     let percent;
-    if (typeof this.loaded === 'number' && typeof this.total === 'number') {
+    if (typeof this.loaded === "number" && typeof this.total === "number") {
       percent = (this.loaded / this.total) * 100;
     }
 
@@ -35,7 +35,7 @@ class HttpClient {
    * @param {RequestConfig} config
    */
   get(url, config) {
-    return this._createRequestInternalObservable('get', url, null, config);
+    return this._createRequestInternalObservable("get", url, null, config);
   }
 
   /**
@@ -44,7 +44,7 @@ class HttpClient {
    * @param {RequestConfig} config
    */
   post(url, data, config) {
-    return this._createRequestInternalObservable('post', url, data, config);
+    return this._createRequestInternalObservable("post", url, data, config);
   }
 
   /**
@@ -53,7 +53,7 @@ class HttpClient {
    * @param {RequestConfig} config
    */
   put(url, data, config) {
-    return this._createRequestInternalObservable('put', url, data, config);
+    return this._createRequestInternalObservable("put", url, data, config);
   }
 
   /**
@@ -61,7 +61,7 @@ class HttpClient {
    * @param {RequestConfig} config
    */
   delete(url, config) {
-    return this._createRequestInternalObservable('delete', url, null, config);
+    return this._createRequestInternalObservable("delete", url, null, config);
   }
 
   /**
@@ -70,11 +70,13 @@ class HttpClient {
    * @param {any} data
    * @param {RequestConfig} config
    *
-   * @returns {rxjs.Observable}
+   * @returns {Rxjs.Observable}
    */
   _createRequestInternalObservable(method, url, data, config) {
     return this._createRequestInternalObservableByFactory((axiosConfig) => {
-      return axiosInstance.request(Object.assign(axiosConfig, { method, url, data }));
+      return axiosInstance.request(
+        Object.assign(axiosConfig, { method, url, data })
+      );
     }, config);
   }
 
@@ -97,7 +99,7 @@ class HttpClient {
           params: config?.params,
           cancelToken: source.token,
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
         };
       } else {
@@ -108,7 +110,11 @@ class HttpClient {
       }
 
       let observer;
-      if (config?.observeProgress || config?.observeUploadProgress || config?.observeDownloadProgress) {
+      if (
+        config?.observeProgress ||
+        config?.observeUploadProgress ||
+        config?.observeDownloadProgress
+      ) {
         const subjectInternal = new Rxjs.Subject();
         const requestSubscription = subjectInternal.subscribe({
           next: (response) => {
@@ -130,7 +136,7 @@ class HttpClient {
             const event = new HttpProgressEventImpl({
               loaded: progressEvent.loaded,
               total: progressEvent.total,
-              type: 'download',
+              type: "download",
             });
             subscriber.next(event);
           };
@@ -141,7 +147,7 @@ class HttpClient {
             const event = new HttpProgressEventImpl({
               loaded: progressEvent.loaded,
               total: progressEvent.total,
-              type: 'upload',
+              type: "upload",
             });
             subscriber.next(event);
           };
@@ -158,19 +164,24 @@ class HttpClient {
     }).pipe(
       Rxjs.subscribeOn(Rxjs.asapScheduler),
       Rxjs.observeOn(Rxjs.asapScheduler),
-      Rxjs.catchError((err) => Rxjs.throwError(err.response))
+      Rxjs.catchError((err) => Rxjs.throwError(() => err.response))
     );
   }
 
   /**
    * @private
-   * @param {rxjs.Subscriber} subscriber
+   * @param {Rxjs.Subscriber} subscriber
    * @param {Promise} requestPromise
    */
   _handleRequestPromise(subscriber, requestPromise) {
     requestPromise
       .then((response) => {
-        if (!response.data || response.data.HasErrors == true || response.data.hasErrors == true) throw response;
+        if (
+          !response.data ||
+          response.data.HasErrors == true ||
+          response.data.hasErrors == true
+        )
+          throw response;
 
         subscriber.next(response);
         subscriber.complete();

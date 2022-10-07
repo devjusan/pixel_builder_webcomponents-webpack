@@ -176,7 +176,7 @@ label.input-checkbox input:checked ~ .check-mark:after {
   z-index: 80;
 }
 
-.loader-instance-backdrop.show {
+.loader-instance-backdrop.show-loader {
   display: flex !important;
 }
 
