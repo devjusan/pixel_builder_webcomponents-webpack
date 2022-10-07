@@ -80,17 +80,6 @@ module.exports = ({ env }, argv) => ({
       template: "./src/index.html",
       filename: "index.html",
     }),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: "src/pixel/dependencies/assets",
-          to: "assets",
-        },
-        { from: "src/pixel/styles", to: "styles" },
-        { from: "src/pixel/insertCdn.js", to: "insertCdn.js" },
-        { from: "src/pixel/modules.js", to: "modules.js" },
-      ],
-    }),
     new Dotenv({
       path: `./.env`,
     }),
