@@ -1,11 +1,6 @@
-import {
-  Pixel,
-  PixelProps,
-  PixelPaginator,
-  PixelPage,
-  PixelWorkflow,
-} from "../domain/models/pixel/index.js";
-import { actualPixelService, modalsService } from "../index.js";
+import { Pixel, PixelProps, PixelPaginator, PixelPage, PixelWorkflow } from '../domain/models/pixel/index.js';
+import { actualPixelService, modalsService } from '../index.js';
+import * as Rxjs from 'rxjs';
 
 class PixelService {
   /** @type{Pixel} */
@@ -17,25 +12,21 @@ class PixelService {
   #mountType;
 
   constructor() {
-    this.#pixel = new Pixel(
-      new PixelProps(),
-      new PixelPaginator(0, [new PixelPage()]),
-      new PixelWorkflow()
-    );
-    this.propsSubject = new rxjs.Subject();
-    this.pagesSubject = new rxjs.Subject();
-    this.paginationSubject = new rxjs.Subject();
+    this.#pixel = new Pixel(new PixelProps(), new PixelPaginator(0, [new PixelPage()]), new PixelWorkflow());
+    this.propsSubject = new Rxjs.Subject();
+    this.pagesSubject = new Rxjs.Subject();
+    this.paginationSubject = new Rxjs.Subject();
 
-    this.onTotalPagesChangesSubject = new rxjs.Subject();
-    this.onActivePageChangesSubject = new rxjs.Subject();
+    this.onTotalPagesChangesSubject = new Rxjs.Subject();
+    this.onActivePageChangesSubject = new Rxjs.Subject();
 
-    this.onLoadComponentsSubject = new rxjs.Subject();
-    this.onAddComponentSubject = new rxjs.Subject();
-    this.onMoveThroughGroupsComponentSubject = new rxjs.Subject();
-    this.onUpdateComponentPropsSubject = new rxjs.Subject();
-    this.onUpdateComponentGridPosSubject = new rxjs.Subject();
-    this.onDeleteComponentSubject = new rxjs.Subject();
-    this.onCompleteLoadSubject = new rxjs.Subject();
+    this.onLoadComponentsSubject = new Rxjs.Subject();
+    this.onAddComponentSubject = new Rxjs.Subject();
+    this.onMoveThroughGroupsComponentSubject = new Rxjs.Subject();
+    this.onUpdateComponentPropsSubject = new Rxjs.Subject();
+    this.onUpdateComponentGridPosSubject = new Rxjs.Subject();
+    this.onDeleteComponentSubject = new Rxjs.Subject();
+    this.onCompleteLoadSubject = new Rxjs.Subject();
 
     this.#actualMultiplicator = 1;
     this.#mountType = {
@@ -62,7 +53,7 @@ class PixelService {
       this.setWorkflow(workflow);
       this.loadComponents();
 
-      console.log("Pixel project imported");
+      console.log('Pixel project imported');
     } catch (error) {
       console.error(error);
     }
@@ -197,8 +188,7 @@ class PixelService {
 
   getActivePageObservable() {
     if (!this.activePageObservable) {
-      this.activePageObservable =
-        this.onActivePageChangesSubject.asObservable();
+      this.activePageObservable = this.onActivePageChangesSubject.asObservable();
     }
 
     return this.activePageObservable;
@@ -206,8 +196,7 @@ class PixelService {
 
   getTotalPagesObservable() {
     if (!this.totalPagesObservable) {
-      this.totalPagesObservable =
-        this.onTotalPagesChangesSubject.asObservable();
+      this.totalPagesObservable = this.onTotalPagesChangesSubject.asObservable();
     }
 
     return this.totalPagesObservable;
@@ -223,9 +212,7 @@ class PixelService {
 
   getLoadComponentsObservable() {
     if (!this.loadComponentsObservable) {
-      this.loadComponentsObservable = this.onLoadComponentsSubject.pipe(
-        rxjs.operators.map(() => this.#pixel)
-      );
+      this.loadComponentsObservable = this.onLoadComponentsSubject.pipe(Rxjs.map(() => this.#pixel));
     }
 
     return this.loadComponentsObservable;
@@ -241,8 +228,7 @@ class PixelService {
 
   getMoveThroughGroupsComponentObservable() {
     if (!this.moveComponentThroughGroupsObservable) {
-      this.moveComponentThroughGroupsObservable =
-        this.onMoveThroughGroupsComponentSubject.asObservable();
+      this.moveComponentThroughGroupsObservable = this.onMoveThroughGroupsComponentSubject.asObservable();
     }
 
     return this.moveComponentThroughGroupsObservable;
@@ -250,8 +236,7 @@ class PixelService {
 
   getUpdateComponentPropsObservable() {
     if (!this.updateComponentPropsObservable) {
-      this.updateComponentPropsObservable =
-        this.onUpdateComponentPropsSubject.asObservable();
+      this.updateComponentPropsObservable = this.onUpdateComponentPropsSubject.asObservable();
     }
 
     return this.updateComponentPropsObservable;
@@ -259,8 +244,7 @@ class PixelService {
 
   getUpdateComponentGridPosObservable() {
     if (!this.updateComponentGridPosObservable) {
-      this.updateComponentGridPosObservable =
-        this.onUpdateComponentGridPosSubject.asObservable();
+      this.updateComponentGridPosObservable = this.onUpdateComponentGridPosSubject.asObservable();
     }
 
     return this.updateComponentGridPosObservable;
@@ -268,8 +252,7 @@ class PixelService {
 
   getRemoveComponentObservable() {
     if (!this.deleteComponentObservable) {
-      this.deleteComponentObservable =
-        this.onDeleteComponentSubject.asObservable();
+      this.deleteComponentObservable = this.onDeleteComponentSubject.asObservable();
     }
 
     return this.deleteComponentObservable;
@@ -308,23 +291,21 @@ class PixelService {
   }
 
   activePageNext() {
-    this.onActivePageChangesSubject.next(
-      this.#pixel.paginator.getPage(this.#pixel.paginator.active)
-    );
+    this.onActivePageChangesSubject.next(this.#pixel.paginator.getPage(this.#pixel.paginator.active));
   }
 
   #mountWithModal() {
-    const modalContainer = document.createElement("pixel-modals-container");
+    const modalContainer = document.createElement('pixel-modals-container');
     document.body.appendChild(modalContainer);
 
-    modalsService.open("widget-stage");
+    modalsService.open('widget-stage');
   }
 
   #mountWithNoModal(source) {
-    const pixelEl = document.getElementById("pixelbuilder_valuation");
+    const pixelEl = document.getElementById('pixelbuilder_valuation');
     pixelEl.noModal = true;
     pixelEl.pixel = source;
-    pixelEl.classList.add("no-modal");
+    pixelEl.classList.add('no-modal');
   }
 }
 

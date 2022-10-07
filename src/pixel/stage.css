@@ -2,7 +2,6 @@ widget-stage {
   display: block;
 }
 
-
 widget-stage .stage-container {
   display: flex;
   flex-direction: column;
@@ -10,7 +9,7 @@ widget-stage .stage-container {
   height: calc(100% - 60px);
   overflow: hidden;
 
-  max-height: 100%;
+  opacity: 1;
   transition: max-height 200ms ease;
 }
 
@@ -38,7 +37,7 @@ widget-stage .stage-content-container {
 }
 
 widget-stage .stage-container.invisible {
-  max-height: 0;
+  opacity: 0;
 }
 
 widget-stage footer {
@@ -87,12 +86,6 @@ widget-stage label {
 widget-stage.no-modal {
   z-index: 10000;
 }
-
- /** ensure styles */
- widget-stage h1,  widget-stage h2,  widget-stage h3 {
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
- }
 
 .tabs-navigator-parent,
 .stack-navigator-parent {

@@ -1,3 +1,5 @@
+import * as Rxjs from 'rxjs';
+
 class RxMutationObserver {
   BASE_CFG = {
     attributes: true,
@@ -6,7 +8,7 @@ class RxMutationObserver {
 
   observeAttrs(el, attributeFilter) {
     const self = this;
-    return new rxjs.Observable((subscriber) => {
+    return new Rxjs.Observable((subscriber) => {
       const cfg = attributeFilter?.length ? Object.assign({ attributeFilter }, self.BASE_CFG) : self.BASE_CFG;
       const mutationObserver = new MutationObserver((__mutations) => {
         const mutations = __mutations.filter((mutation) => mutation.type === 'attributes');
@@ -72,7 +74,7 @@ export class WebComponent extends HTMLElement {
    */
   constructor(templateString = null, stylesString = '', shadowDom = null, styleShadowDom = '') {
     super();
-    this.lifeCycle = new rxjs.BehaviorSubject(WebComponent.LifeCycleMap.UNMOUNTED);
+    this.lifeCycle = new Rxjs.BehaviorSubject(WebComponent.LifeCycleMap.UNMOUNTED);
 
     this.__templateEl = $(templateString);
     this.__styles = stylesString;
@@ -108,37 +110,36 @@ export class WebComponent extends HTMLElement {
   }
 
   observeAttrsChanges(callback, whiteList) {
-    return rxjs
-      .merge(
-        rxjs.of(
-          whiteList?.length
-            ? whiteList.map((attributeName) => ({
-                attributeName,
-                target: this,
-              }))
-            : Object.values(this.attributes).map((attr) => ({
-                attributeName: attr.name,
-                target: this,
-              }))
-        ),
-        new RxMutationObserver()
-          .observeAttrs(this, whiteList)
-          .pipe(
-            rxjs.operators.map((mutations) =>
-              mutations.filter((mutation) => mutation.target.getAttribute(mutation.attributeName) !== mutation.oldValue)
-            )
+    return Rxjs.merge(
+      Rxjs.of(
+        whiteList?.length
+          ? whiteList.map((attributeName) => ({
+              attributeName,
+              target: this,
+            }))
+          : Object.values(this.attributes).map((attr) => ({
+              attributeName: attr.name,
+              target: this,
+            }))
+      ),
+      new RxMutationObserver()
+        .observeAttrs(this, whiteList)
+        .pipe(
+          Rxjs.map((mutations) =>
+            mutations.filter((mutation) => mutation.target.getAttribute(mutation.attributeName) !== mutation.oldValue)
           )
-      )
+        )
+    )
       .pipe(
-        rxjs.operators.filter((mutations) => mutations.length),
-        rxjs.operators.map((mutations) =>
+        Rxjs.filter((mutations) => mutations.length),
+        Rxjs.map((mutations) =>
           mutations.map((nextMutation) => ({
             attributeName: nextMutation.attributeName,
             newValue: nextMutation.target.getAttribute(nextMutation.attributeName),
             oldValue: nextMutation.oldValue,
           }))
         ),
-        rxjs.operators.map((mutations) =>
+        Rxjs.map((mutations) =>
           mutations.reduce((map, nextMutation) => {
             map[nextMutation.attributeName] = nextMutation;
             return map;
@@ -230,9 +231,9 @@ export class WebComponent extends HTMLElement {
   componentWillUnmount() {}
 
   /**
-   * @param {rxjs.Subscription | (() => void) | Array<rxjs.Subscription | (() => void)>} taskOrTasks
+   * @param {Rxjs.Subscription | (() => void) | Array<Rxjs.Subscription | (() => void)>} taskOrTasks
    *
-   * @returns {rxjs.Subscription}
+   * @returns {Rxjs.Subscription}
    */
   registerOnUnmount(taskOrTasks) {
     if (!Array.isArray(taskOrTasks)) {
@@ -241,7 +242,7 @@ export class WebComponent extends HTMLElement {
 
     return this.lifeCycle
       .pipe(
-        rxjs.operators.first(
+        Rxjs.first(
           (lifeCycle) =>
             lifeCycle === WebComponent.LifeCycleMap.WILL_UNMOUNT || lifeCycle === WebComponent.LifeCycleMap.UNMOUNTED
         )
@@ -260,12 +261,12 @@ export class WebComponent extends HTMLElement {
   /**
    * @template T
    *
-   * @returns {rxjs.MonoTypeOperatorFunction<T>}
+   * @returns {Rxjs.MonoTypeOperatorFunction<T>}
    */
   takeUntilLifeCycle() {
-    return rxjs.operators.takeUntil(
+    return Rxjs.takeUntil(
       this.lifeCycle.pipe(
-        rxjs.operators.first(
+        Rxjs.first(
           (lifeCycle) =>
             lifeCycle === WebComponent.LifeCycleMap.WILL_UNMOUNT || lifeCycle === WebComponent.LifeCycleMap.UNMOUNTED
         )
@@ -291,7 +292,7 @@ export class WebComponent extends HTMLElement {
 
   #getGivenLcObservable = (lC) =>
     this.lifeCycle.pipe(
-      rxjs.operators.filter((__lC) => __lC === lC),
-      rxjs.operators.map(() => this)
+      Rxjs.filter((__lC) => __lC === lC),
+      Rxjs.map(() => this)
     );
 }

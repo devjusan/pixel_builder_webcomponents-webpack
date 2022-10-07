@@ -37,10 +37,6 @@ const scriptList = [
   },
   {
     type: "script",
-    src: "https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.1.0/rxjs.umd.min.js",
-  },
-  {
-    type: "script",
     src: "https://cdnjs.cloudflare.com/ajax/libs/navigo/8.11.1/navigo.min.js",
   },
   {
@@ -101,8 +97,6 @@ let hasBeenExecuted = false;
     } else {
       element.setAttribute("href", item.src);
       element.setAttribute("rel", "stylesheet");
-      element.setAttribute("type", "text/css");
-      element.setAttribute("crossorigin", "anonymous");
     }
 
     element.setAttribute("key", item.src);

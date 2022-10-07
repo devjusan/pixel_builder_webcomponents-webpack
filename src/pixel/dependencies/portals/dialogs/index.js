@@ -1,2 +1,2 @@
-export * from "./container/dialogs-container.js";
-export * from "./default/dialogs-default.js";
+export * from './container/dialogs-container.js';
+export * from './default/dialogs-default.js';

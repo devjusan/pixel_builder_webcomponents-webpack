@@ -1,3 +1,5 @@
+import * as Rxjs from 'rxjs';
+
 /**
  * @typedef BeforeHook
  * @property {((route: any, config: RouterConfig) => void)} resolve
@@ -15,7 +17,7 @@
 class RouterService {
   #routeParams;
   constructor() {
-    this.events = new rxjs.BehaviorSubject().pipe(rxjs.operators.filter((x) => !!x));
+    this.events = new Rxjs.BehaviorSubject().pipe(Rxjs.filter((x) => !!x));
     this.navigo = new Navigo('/', {
       hash: true,
     });
@@ -44,7 +46,7 @@ class RouterService {
       this.navigo.on(route.path, this.#handleNavigate.bind(this, route), {
         before: (done) => {
           let result = beforeHookFn(route, config);
-          if (result instanceof rxjs.Observable) {
+          if (result instanceof Rxjs.Observable) {
             result = result.toPromise();
           } else if (!(result instanceof Promise)) {
             result = Promise.resolve(result);

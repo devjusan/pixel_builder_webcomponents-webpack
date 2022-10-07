@@ -222,6 +222,7 @@ export class ArrayUtils {
 
   /**
    * @param {Array<T>} array
+<<<<<<< HEAD
    * @param {number} key
    *
    * @returns {Array<Array<T>>}
@@ -244,6 +245,8 @@ export class ArrayUtils {
 
   /**
    * @param {Array<T>} array
+=======
+>>>>>>> feat/pixel-exec
    * @param {number} size
    *
    * @returns {Array<Array<T>>}

@@ -1,8 +1,6 @@
 import { routerService } from './routerService.js';
-
-import { WebComponent, loadRequirement } from '../core/index.js';
-
-const style = await loadRequirement('./router-container.css', import.meta.url);
+import style from './router-container.css';
+import { WebComponent } from '../core/index.js';
 
 export class RouterContainer extends WebComponent {
   constructor() {

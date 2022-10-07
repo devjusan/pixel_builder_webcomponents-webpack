@@ -1,9 +1,10 @@
 import { scheduleAsync, scheduleDelayAsync, scheduleAnimationFrameAsync } from './schedule.js';
 import { TaskManager, TaskOperation } from './task-manager.js';
+import * as Rxjs from 'rxjs';
 
 /**
  * @typedef {HTMLElement | SVGAElement} El
- * @typedef {void | (() => any) | rxjs.Subscription | Array<(() => any) | rxjs.Subscription>} EventBinded
+ * @typedef {void | (() => any) | Rxjs.Subscription | Array<(() => any) | Rxjs.Subscription>} EventBinded
  *
  * @typedef {(item: any, index: number) => string} KeyExtractor
  *
@@ -1199,7 +1200,7 @@ export class ListRenderController {
       if (Array.isArray(sub)) {
         sub = this.__resolveSubscription(sub);
       } else if (typeof sub === 'function') {
-        sub = new rxjs.Subscription(sub);
+        sub = new Rxjs.Subscription(sub);
       }
 
       if (!subscription && sub) {

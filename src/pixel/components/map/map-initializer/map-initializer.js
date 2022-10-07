@@ -1,9 +1,9 @@
-import { IconUtils } from "../../../dependencies/index.js";
-import { WebComponent } from "../../../libs/at/core/index.js";
-import BoxInfo from "../box-info/box-info.js";
-import { MAP } from "../map.constants.js";
-import template from "./map-initializer.html";
-import styles from "./map-initializer.css";
+import { IconUtils } from '../../../dependencies/index.js';
+import { WebComponent } from '../../../libs/at/core/index.js';
+import BoxInfo from '../box-info/box-info.js';
+import { MAP } from '../map.constants.js';
+import template from './map-initializer.html';
+import styles from './map-initializer.css';
 
 export default class MapInitializer extends WebComponent {
   /** @type {BoxInfo} */
@@ -15,8 +15,8 @@ export default class MapInitializer extends WebComponent {
 
   onInit() {
     this.init();
-    this.mapViewPort = this.querySelector(".ol-viewport");
-    this.boxInfoEl = document.createElement("app-box-info");
+    this.mapViewPort = this.querySelector('.ol-viewport');
+    this.boxInfoEl = document.createElement('app-box-info');
 
     this.mapViewPort.appendChild(this.boxInfoEl);
     this.mapViewPort.appendChild(this.#generateWindRose());
@@ -43,7 +43,7 @@ export default class MapInitializer extends WebComponent {
     });
 
     const scaleLine = new ol.control.ScaleLine({
-      className: "ol-scale-line",
+      className: 'ol-scale-line',
       steps: 4,
       text: false,
     });
@@ -55,12 +55,7 @@ export default class MapInitializer extends WebComponent {
     let feature = null;
 
     const format = new ol.format.WKT();
-    let properties = {
-      area: item.area,
-      gid: item.gid,
-      ogc_fid: item.ogc_fid,
-      nome: item.title,
-    };
+    let properties = { area: item.area, gid: item.gid, ogc_fid: item.ogc_fid, nome: item.title };
     if (!Array.isArray(item.value)) {
       feature = format.readFeature(item.value, {
         dataProjection: MAP.CONFIG.EPSG.EPSG4326,
@@ -92,9 +87,7 @@ export default class MapInitializer extends WebComponent {
 
     this.mapInstance.addLayer(layer);
     this.mapInstance.getView().fit(layer.getSource().getExtent());
-    this.mapInstance
-      .getView()
-      .setZoom(this.mapInstance.getView().getZoom() - 2);
+    this.mapInstance.getView().setZoom(this.mapInstance.getView().getZoom() - 2);
     this.addLegend(item);
   }
 
@@ -133,7 +126,7 @@ export default class MapInitializer extends WebComponent {
       .getArray()
       .forEach((layer) => {
         if (layer.values_.name === item.oldName) {
-          layer.set("name", newName);
+          layer.set('name', newName);
         }
       });
   }
@@ -143,17 +136,8 @@ export default class MapInitializer extends WebComponent {
       .getLayers()
       .getArray()
       .forEach((layer) => {
-        if (
-          layer.values_.name === item.title ||
-          layer.values_.name === item.oldName
-        ) {
-          const style = this.#setStyle(
-            Number(size),
-            color,
-            fill,
-            lineDash,
-            opacity
-          );
+        if (layer.values_.name === item.title || layer.values_.name === item.oldName) {
+          const style = this.#setStyle(Number(size), color, fill, lineDash, opacity);
           layer.setStyle(style);
           this.addLegend({ ...item, size, color, fill, lineDash, opacity });
         }
@@ -187,9 +171,9 @@ export default class MapInitializer extends WebComponent {
   }
 
   #saveScreenshot(canvas) {
-    const dataURL = canvas.toDataURL("image/png");
+    const dataURL = canvas.toDataURL('image/png');
 
-    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, '');
   }
 
   #updateMapSize() {
@@ -250,12 +234,12 @@ export default class MapInitializer extends WebComponent {
       style: [
         new ol.style.Style({
           stroke: new ol.style.Stroke({
-            color: "rgba(0, 0, 255, 1)",
+            color: 'rgba(0, 0, 255, 1)',
             width: 3,
             lineDash: undefined,
           }),
           fill: new ol.style.Fill({
-            color: "rgba(0, 0, 0, 0.2)",
+            color: 'rgba(0, 0, 0, 0.2)',
           }),
         }),
       ],
@@ -271,24 +255,24 @@ export default class MapInitializer extends WebComponent {
     return [
       new ol.style.Style({
         stroke: new ol.style.Stroke({
-          color: color ?? "rgba(0, 0, 255, 1)",
+          color: color ?? 'rgba(0, 0, 255, 1)',
           width: size ?? 3,
           lineDash: lineDash ? [6] : undefined,
         }),
         fill: new ol.style.Fill({
-          color: fillAsArray ?? "rgba(0, 0, 0, 0.2)",
+          color: fillAsArray ?? 'rgba(0, 0, 0, 0.2)',
         }),
       }),
     ];
   }
 
   #generateWindRose() {
-    const iconEl = IconUtils.createIcon("wind-rose", "200", "white");
+    const iconEl = IconUtils.createIcon('wind-rose', '200', 'white');
 
-    iconEl.classList.add("wind-rose");
+    iconEl.classList.add('wind-rose');
 
     return iconEl;
   }
 }
 
-customElements.define("app-map-initializer", MapInitializer);
+customElements.define('app-map-initializer', MapInitializer);

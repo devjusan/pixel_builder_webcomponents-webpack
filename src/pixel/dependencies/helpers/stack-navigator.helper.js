@@ -1,4 +1,5 @@
 import { WithStackNavigator, StackNavigatorScreen } from '../adapters/index.js';
+import * as Rxjs from 'rxjs';
 
 class StackParentScreen {
   ClassNames = {
@@ -102,7 +103,7 @@ export default class StackNavigator {
       this.#stack.findIndex((stackScreen) => stackScreen.name === initialPageName),
       0
     );
-    this.activePageSubject = new rxjs.BehaviorSubject(this.#stack[this.#activePageIndex]);
+    this.activePageSubject = new Rxjs.BehaviorSubject(this.#stack[this.#activePageIndex]);
 
     this.#onPrepare(isLazyMounted);
   }

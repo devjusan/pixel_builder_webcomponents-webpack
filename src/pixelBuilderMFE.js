@@ -1,5 +1,3 @@
-import scopedStyles from "./pixel/scopedStyles.js";
-
 const app = {
   use(plugin, widgetInstance) {
     console.log("has been tryied to install plugin", plugin, widgetInstance);
@@ -17,9 +15,9 @@ const app = {
         const container = document.getElementById("pixel_builder_container");
         const stageEl = document.createElement("widget-stage");
         stageEl.id = "pixelbuilder_valuation";
-
-        scopedStyles(container);
         container.appendChild(stageEl);
+
+        await import("./pixel/scopedStyles.js");
       });
     });
   },

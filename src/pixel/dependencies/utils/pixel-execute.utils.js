@@ -10,6 +10,7 @@ import {
   PixelUtils,
   pixelTokenService,
 } from '../index.js';
+import * as Rxjs from 'rxjs';
 
 export default class PixelExecuteUtils {
   #REQUEST = { METHOD_TYPES: { POST: 'POST', GET: 'GET' }, HEADERS: { 'Content-Type': 'application/json' } };
@@ -28,7 +29,7 @@ export default class PixelExecuteUtils {
   execute() {
     const { atStart, atEnd } = this.#functionsAtOrder();
 
-    return new rxjs.Observable((subscriber) => {
+    return new Rxjs.Observable((subscriber) => {
       Promise.all(
         atStart.map(async (fn) => await this.#asyncFetch(fn.requestMethod, fn.url, fn.fieldEntriesMap, fn.id))
       ).finally(() => {

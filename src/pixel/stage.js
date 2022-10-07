@@ -17,7 +17,8 @@ import {
 import { ModalAdapter } from "./dependencies/adapters/index.js";
 import { localLoaderService } from "./dependencies/index.js";
 import { ListRenderControllerBuilder } from "./libs/list-render/index.js";
-import tokenService from "./dependencies/services/token.service.js";
+import * as Rxjs from "rxjs";
+import tokenService from "./dependencies/services/token.service";
 
 export default class Stage extends ModalAdapter {
   /** @type {boolean} */
@@ -27,10 +28,10 @@ export default class Stage extends ModalAdapter {
    * @param {HTMLElement[]} elements
    */
   set headerActions(elements) {
-    new ListRenderControllerBuilder(this.actionsContainerEl)
-      .withItemCreator((itemEl) => itemEl)
-      .build()
-      .render(elements);
+    // new ListRenderControllerBuilder(this.actionsContainerEl)
+    //   .withItemCreator((itemEl) => itemEl)
+    //   .build()
+    //   .render(elements);
   }
 
   set noModal(value) {
@@ -55,10 +56,7 @@ export default class Stage extends ModalAdapter {
   }
 
   onInit() {
-    this.toggleViewModeEl = this.querySelector(".chevron-icon");
-    this.headerIconEl = this.querySelector(".widget-icon");
-    this.headerIconWrapperEl = this.querySelector(".widget-icon-wrapper");
-    this.actionsContainerEl = this.querySelector(".actions-container");
+    this.headerEl = this.querySelector(".stage__header");
     this.paginationEl = this.querySelector("#pagination");
     this.activePageViewEl = this.querySelector("#pagination  #current-page");
     this.maxPageEl = this.querySelector("#pagination #max-page");
@@ -77,9 +75,10 @@ export default class Stage extends ModalAdapter {
       this.interactiveContainerEl
     );
     this.pixelExecuteInstance = new PixelExecuteUtils();
-    tokenService.setToken(process.env.PIXEL_API_TOKEN);
 
     this.localLoaderInstance.setIsLoading();
+
+    tokenService.setToken(process.env.PIXEL_API_TOKEN);
     pixelRepositoryService
       .getPixelById(374)
       .pipe(this.takeUntilLifeCycle())
@@ -150,13 +149,11 @@ export default class Stage extends ModalAdapter {
       .pipe(this.takeUntilLifeCycle())
       .subscribe(this.handleLoadButtonId.bind(this));
 
-    rxjs
-      .fromEvent(this.prevPageBtn, "click")
+    Rxjs.fromEvent(this.prevPageBtn, "click")
       .pipe(this.takeUntilLifeCycle())
       .subscribe(this.handlePrevPageNavigation.bind(this));
 
-    rxjs
-      .fromEvent(this.nextPageBtn, "click")
+    Rxjs.fromEvent(this.nextPageBtn, "click")
       .pipe(this.takeUntilLifeCycle())
       .subscribe(this.handleNextPageNavigation.bind(this));
 
@@ -248,10 +245,9 @@ export default class Stage extends ModalAdapter {
       return;
     }
 
-    rxjs
-      .fromEvent(triggerEl, "click")
+    Rxjs.fromEvent(triggerEl, "click")
       .pipe(
-        rxjs.operators.mergeMap(() => {
+        Rxjs.mergeMap(() => {
           this.localLoaderInstance.setIsLoading();
 
           return this.pixelExecuteInstance.execute();
@@ -271,10 +267,9 @@ export default class Stage extends ModalAdapter {
       return;
     }
 
-    rxjs
-      .fromEvent(triggerEl, "click")
+    Rxjs.fromEvent(triggerEl, "click")
       .pipe(
-        rxjs.operators.mergeMap(() => this.#handleSaveTrigger(title)),
+        Rxjs.mergeMap(() => this.#handleSaveTrigger(title)),
         this.takeUntilLifeCycle()
       )
       .subscribe({
@@ -302,13 +297,10 @@ export default class Stage extends ModalAdapter {
         multiplicator,
       });
 
-      rxjs
-        .fromEvent(reportTrigger, "click")
+      Rxjs.fromEvent(reportTrigger, "click")
         .pipe(
-          rxjs.operators.tap(() => this.localLoaderInstance.setIsLoading()),
-          rxjs.operators.mergeMap(() =>
-            pixelExecuteReportInstance.generateReport()
-          ),
+          Rxjs.tap(() => this.localLoaderInstance.setIsLoading()),
+          Rxjs.mergeMap(() => pixelExecuteReportInstance.generateReport()),
           this.takeUntilLifeCycle()
         )
         .subscribe();
@@ -374,6 +366,7 @@ export default class Stage extends ModalAdapter {
     } = props;
 
     this.changePixelSize(size);
+    this.changePixelBorderRadius(borderRadius);
     this.changePixelBackgroundColor(backgroundColor);
     this.changePixelTextColor(textColor);
     this.changePixelHeaderBackgroundColor(headerColor);
@@ -390,6 +383,13 @@ export default class Stage extends ModalAdapter {
     this.style.setProperty("--grid-cell-height", `${unitSize.height}px`);
     this.paginatorContainerEl.style.setProperty("height", `${height}px`);
     this.paginatorContainerEl.style.setProperty("width", `${width}px`);
+  }
+
+  changePixelBorderRadius(borderRadius) {
+    this.interactiveContainerEl.style.setProperty(
+      "border-radius",
+      `0 0 ${borderRadius}px ${borderRadius}px`
+    );
   }
 
   changePixelBackgroundColor(backgroundColor) {
@@ -493,34 +493,32 @@ export default class Stage extends ModalAdapter {
       .replace(/\s/g, "_");
 
     return storagePixelService.getSelectedStorage().pipe(
-      rxjs.operators.take(1),
-      rxjs.operators.tap(() => this.localLoaderInstance.setIsLoading()),
-      rxjs.operators.mergeMap((storage) =>
+      Rxjs.take(1),
+      Rxjs.tap(() => this.localLoaderInstance.setIsLoading()),
+      Rxjs.mergeMap((storage) =>
         PixelExecuteSaveUtils.executeSave().pipe(
-          rxjs.operators.map((data) => ({
+          Rxjs.map((data) => ({
             fileContent: data,
             fileName: name,
             ...storage,
           }))
         )
       ),
-      rxjs.operators.switchMap(
-        ({ fileContent, fileName, storageId, folderId }) => {
-          if (!storageId || !folderId) {
-            toastService.error(
-              "Por favor, selecione um Storage e uma Pasta para salvar o pixel",
-              "Erro"
-            );
-            return rxjs.of(null);
-          }
-          return storagePixelService.uploadFile(
-            fileName,
-            fileContent,
-            storageId,
-            folderId
+      Rxjs.switchMap(({ fileContent, fileName, storageId, folderId }) => {
+        if (!storageId || !folderId) {
+          toastService.error(
+            "Por favor, selecione um Storage e uma Pasta para salvar o pixel",
+            "Erro"
           );
+          return Rxjs.of(null);
         }
-      ),
+        return storagePixelService.uploadFile(
+          fileName,
+          fileContent,
+          storageId,
+          folderId
+        );
+      }),
       this.takeUntilLifeCycle()
     );
   }

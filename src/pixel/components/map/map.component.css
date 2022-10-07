@@ -48,7 +48,7 @@ widget-map .entries-box {
   max-height: 100%;
 }
 
-widget-map .entries-box.hide-component  {
+widget-map .entries-box.hide {
   max-height: 0%;
 }
 
@@ -133,7 +133,7 @@ widget-map .on-error {
   padding: 0.5rem 0;
 }
 
-widget-map.hide-component .entries-slot {
+widget-map.hide .entries-slot {
   max-height: 0;
 }
 

@@ -1,4 +1,5 @@
 import { scheduleAsync } from './schedule.js';
+import * as Rxjs from 'rxjs';
 
 export class TaskManager {
   /**
@@ -91,7 +92,7 @@ export class TaskOperation {
    */
   constructor(taskFn) {
     this.taskFn = taskFn;
-    this._onFinishSubject = new rxjs.Subject();
+    this._onFinishSubject = new Rxjs.Subject();
 
     this.onFinish = this._onFinishSubject.toPromise();
   }

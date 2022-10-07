@@ -1,4 +1,4 @@
-import { WebComponent } from "../../../libs/at/core/index.js";
+import { WebComponent } from '../../../libs/at/core/index.js';
 import {
   localLoaderService,
   StackNavigator,
@@ -6,15 +6,16 @@ import {
   IconUtils,
   storagePixelService,
   toastService,
-} from "../../index.js";
-import { ListRenderControllerBuilder } from "../../../libs/list-render/index.js";
-import template from "./storage-selector.html";
-import styles from "./storage-selector.css";
+} from '../../index.js';
+import { ListRenderControllerBuilder } from '../../../libs/list-render/index.js';
+import template from './storage-selector.html';
+import styles from './storage-selector.css';
+import * as Rxjs from 'rxjs';
 
 export default class StorageSelector extends WebComponent {
-  #FIRST_PAGE_NAME = "placeholder";
+  #FIRST_PAGE_NAME = 'placeholder';
 
-  /** @typedef {rxjs.BehaviorSubject<{storageName: string, storageId: number, folderId: number} | {}> } SelectedStorage */
+  /** @typedef {Rxjs.BehaviorSubject<{storageName: string, storageId: number, folderId: number} | {}> } SelectedStorage */
 
   /** @type {SelectedStorage} */
   #selectedStorage;
@@ -44,18 +45,18 @@ export default class StorageSelector extends WebComponent {
   constructor() {
     super(template, styles);
 
-    this.#selectedStorage = new rxjs.BehaviorSubject({});
+    this.#selectedStorage = new Rxjs.BehaviorSubject({});
   }
 
   onInit() {
-    this.containerListEl = this.querySelector(".stack-list");
-    this.prevPageBtn = this.querySelector("#prev-page");
-    this.nextPageBtn = this.querySelector("#next-page");
-    this.selectedStorageTitle = this.querySelector(".selected-storage");
+    this.containerListEl = this.querySelector('.stack-list');
+    this.prevPageBtn = this.querySelector('#prev-page');
+    this.nextPageBtn = this.querySelector('#next-page');
+    this.selectedStorageTitle = this.querySelector('.selected-storage');
 
     this.stackNavigator = new StackNavigator(this.containerListEl, [
       {
-        screenEl: document.createElement("ul"),
+        screenEl: document.createElement('ul'),
         name: this.#FIRST_PAGE_NAME,
         payload: {},
       },
@@ -67,17 +68,13 @@ export default class StorageSelector extends WebComponent {
   componentDidMount() {
     this.localLoaderInstance.setIsLoading();
 
-    this.#selectedStorage
-      .pipe(this.takeUntilLifeCycle())
-      .subscribe(this.#handleSelectedStorage.bind(this));
+    this.#selectedStorage.pipe(this.takeUntilLifeCycle()).subscribe(this.#handleSelectedStorage.bind(this));
 
-    rxjs
-      .fromEvent(this.prevPageBtn, "click")
+    Rxjs.fromEvent(this.prevPageBtn, 'click')
       .pipe(this.takeUntilLifeCycle())
       .subscribe(() => this.stackNavigator.previousPage());
 
-    rxjs
-      .fromEvent(this.nextPageBtn, "click")
+    Rxjs.fromEvent(this.nextPageBtn, 'click')
       .pipe(this.takeUntilLifeCycle())
       .subscribe(() => this.stackNavigator.nextPage());
 
@@ -98,10 +95,7 @@ export default class StorageSelector extends WebComponent {
           return;
         }
 
-        this.listRenderControllerContents
-          ?.withTarget(page.screenEl)
-          .build()
-          .renderAsync(page.payload);
+        this.listRenderControllerContents?.withTarget(page.screenEl).build().renderAsync(page.payload);
       });
 
     this.propagateListRenderController();
@@ -115,18 +109,13 @@ export default class StorageSelector extends WebComponent {
 
   propagateListRenderControllerStorages() {
     this.listRenderControllerStorages = new ListRenderControllerBuilder()
-      .withKeyExtractor(
-        (item, index) =>
-          (item.StorageID !== 0 && item.StorageID) ?? item.FolderID ?? index
-      )
+      .withKeyExtractor((item, index) => (item.StorageID !== 0 && item.StorageID) ?? item.FolderID ?? index)
       .withItemCreator((item) => {
         const { StorageID, StorageName } = item;
 
-        const li = document.createElement("li");
-        const text = document.createTextNode(
-          StringUtils.upperCaseFirstLetter(StorageName ?? item.FolderName)
-        );
-        const icon = IconUtils.createIcon("storage", "16", "#222");
+        const li = document.createElement('li');
+        const text = document.createTextNode(StringUtils.upperCaseFirstLetter(StorageName ?? item.FolderName));
+        const icon = IconUtils.createIcon('storage', '16', '#222');
 
         if (StorageID) {
           this.storageID = StorageID;
@@ -134,7 +123,7 @@ export default class StorageSelector extends WebComponent {
 
         if (item.FolderID) {
           item.hasFolder = true;
-          li.classList.add("has-item");
+          li.classList.add('has-item');
         } else {
           item.hasFolder = false;
         }
@@ -148,18 +137,13 @@ export default class StorageSelector extends WebComponent {
       .withOnAfterBindItem((itemEl, item, key) => {
         const { StorageID, FolderId } = item;
 
-        const data = item.hasFolder
-          ? { StorageID: this.storageID, FolderId: item.FolderID }
-          : { StorageID, FolderId };
+        const data = item.hasFolder ? { StorageID: this.storageID, FolderId: item.FolderID } : { StorageID, FolderId };
 
-        const subscription = rxjs
-          .fromEvent(itemEl, "click")
+        const subscription = Rxjs.fromEvent(itemEl, 'click')
           .pipe(this.takeUntilLifeCycle())
           .subscribe(() => {
-            const pageName = "page-" + key;
-            const hasPage = this.stackNavigator.stack.find(
-              (page) => page.name === pageName
-            );
+            const pageName = 'page-' + key;
+            const hasPage = this.stackNavigator.stack.find((page) => page.name === pageName);
 
             this.#selectedStorage.next({
               storageName: item.StorageName ?? item.FolderName,
@@ -191,15 +175,15 @@ export default class StorageSelector extends WebComponent {
     this.listRenderControllerContents = new ListRenderControllerBuilder()
       .withKeyExtractor((item, index) => item.key ?? index)
       .withItemCreator(() => {
-        const itemEl = document.createElement("div");
+        const itemEl = document.createElement('div');
 
-        const foldersListEl = document.createElement("ul");
-        const foldersTitleEl = document.createElement("h4");
-        const filesListEl = document.createElement("ul");
-        const filesTitleEl = document.createElement("h4");
+        const foldersListEl = document.createElement('ul');
+        const foldersTitleEl = document.createElement('h4');
+        const filesListEl = document.createElement('ul');
+        const filesTitleEl = document.createElement('h4');
 
-        foldersTitleEl.innerText = "Pastas";
-        filesTitleEl.innerText = "Arquivos";
+        foldersTitleEl.innerText = 'Pastas';
+        filesTitleEl.innerText = 'Arquivos';
 
         itemEl.appendChild(foldersTitleEl);
         itemEl.appendChild(foldersListEl);
@@ -215,14 +199,8 @@ export default class StorageSelector extends WebComponent {
         const { Files, Folders } = item;
         const { foldersList, filesList } = itemEl;
 
-        this.listRenderControllerStorages
-          .withTarget(foldersList)
-          .build()
-          .renderAsync(Folders);
-        this.listRenderControllerFiles
-          .withTarget(filesList)
-          .build()
-          .renderAsync(Files);
+        this.listRenderControllerStorages.withTarget(foldersList).build().renderAsync(Folders);
+        this.listRenderControllerFiles.withTarget(filesList).build().renderAsync(Files);
       });
   }
 
@@ -232,14 +210,12 @@ export default class StorageSelector extends WebComponent {
       .withItemCreator((item) => {
         const { FileName } = item;
 
-        const li = document.createElement("li");
-        const text = document.createTextNode(
-          StringUtils.upperCaseFirstLetter(FileName)
-        );
-        const icon = IconUtils.createIcon("folder", "13", "#222");
+        const li = document.createElement('li');
+        const text = document.createTextNode(StringUtils.upperCaseFirstLetter(FileName));
+        const icon = IconUtils.createIcon('folder', '13', '#222');
 
         li.title = item.FileName;
-        li.classList.add("has-item");
+        li.classList.add('has-item');
 
         li.appendChild(text);
         li.appendChild(icon);
@@ -247,15 +223,11 @@ export default class StorageSelector extends WebComponent {
         return li;
       })
       .withOnAfterBindItem((itemEl, item) => {
-        const subscription = rxjs
-          .fromEvent(itemEl, "click")
+        const subscription = Rxjs.fromEvent(itemEl, 'click')
           .pipe(this.takeUntilLifeCycle())
           .subscribe(() => {
             if (this.READ_ONLY) {
-              toastService.warning(
-                "O modo apenas leitura está ativo para esta ação.",
-                "Atenção!"
-              );
+              toastService.warning('O modo apenas leitura está ativo para esta ação.', 'Atenção!');
               return;
             }
 
@@ -274,7 +246,7 @@ export default class StorageSelector extends WebComponent {
       return;
     }
 
-    const firstPageContainerEl = document.createElement("div");
+    const firstPageContainerEl = document.createElement('div');
 
     this.stackNavigator.setStack(() => {
       const newStack = [
@@ -288,10 +260,7 @@ export default class StorageSelector extends WebComponent {
       return [newStack, 0];
     });
 
-    this.listRenderControllerStorages
-      ?.withTarget(firstPageContainerEl)
-      .build()
-      .renderAsync(storages);
+    this.listRenderControllerStorages?.withTarget(firstPageContainerEl).build().renderAsync(storages);
   }
 
   /**
@@ -299,20 +268,16 @@ export default class StorageSelector extends WebComponent {
    * @param {number} key
    */
   setStack(contents, key) {
-    const page = document.createElement("div");
+    const page = document.createElement('div');
     const pageName = `page-${key}`;
-    const hasPage = this.stackNavigator.stack.find(
-      (item) => item.name === pageName
-    );
+    const hasPage = this.stackNavigator.stack.find((item) => item.name === pageName);
     let _stack = {};
     let newActiveI = 0;
     let newStack = [];
     this.stackNavigator.setStack((stack, activeI) => {
       if (hasPage) {
         _stack = hasPage;
-        newActiveI = this.stackNavigator.stack.findIndex(
-          (item) => item.name === pageName
-        );
+        newActiveI = this.stackNavigator.stack.findIndex((item) => item.name === pageName);
         newStack = [...stack];
       } else {
         _stack = { screenEl: page, name: pageName, payload: [contents] };
@@ -320,10 +285,7 @@ export default class StorageSelector extends WebComponent {
         newActiveI = newStack.length - 1;
       }
 
-      this.listRenderControllerContents
-        ?.withTarget(page)
-        .build()
-        .renderAsync([contents]);
+      this.listRenderControllerContents?.withTarget(page).build().renderAsync([contents]);
 
       return [newStack, newActiveI];
     });
@@ -349,7 +311,7 @@ export default class StorageSelector extends WebComponent {
    */
   #handleSelectedStorage(storage) {
     const { storageName } = storage;
-    this.selectedStorageTitle.innerText = storageName ?? "Nenhum";
+    this.selectedStorageTitle.innerText = storageName ?? 'Nenhum';
 
     storagePixelService.setSelectedStorage(storage);
   }
@@ -362,17 +324,17 @@ export default class StorageSelector extends WebComponent {
     const lastPage = this.stackNavigator.stack[stackListSize];
 
     if (page.name === lastPage.name) {
-      this.nextPageBtn.setAttribute("disabled", "disabled");
+      this.nextPageBtn.setAttribute('disabled', 'disabled');
     } else {
-      this.nextPageBtn.removeAttribute("disabled");
+      this.nextPageBtn.removeAttribute('disabled');
     }
 
     if (page.name === this.#FIRST_PAGE_NAME) {
-      this.prevPageBtn.setAttribute("disabled", "disabled");
+      this.prevPageBtn.setAttribute('disabled', 'disabled');
     } else {
-      this.prevPageBtn.removeAttribute("disabled");
+      this.prevPageBtn.removeAttribute('disabled');
     }
   }
 }
 
-customElements.define("app-storage-selector", StorageSelector);
+customElements.define('app-storage-selector', StorageSelector);

@@ -1,23 +1,23 @@
-import { Modals } from "../domain/models/pixel/helpers/index.js";
-
+import { Modals } from '../domain/models/pixel/helpers/index.js';
+import * as Rxjs from 'rxjs';
 class ModalsService {
   /** @type {Modals[]} */
   #state;
 
   constructor() {
     this.#state = new Modals({
-      "widget-stage": {
+      'widget-stage': {
         isActionRequired: true,
-        makeView: () => document.createElement("widget-stage"),
+        makeView: () => document.createElement('widget-stage'),
       },
-      "map-component-helper": {
+      'map-component-helper': {
         isActionRequired: false,
-        makeView: () => document.createElement("app-map-component-helper"),
+        makeView: () => document.createElement('app-map-component-helper'),
       },
     });
 
-    this.onPushModal = new rxjs.Subject();
-    this.onPopModal = new rxjs.Subject();
+    this.onPushModal = new Rxjs.Subject();
+    this.onPopModal = new Rxjs.Subject();
   }
 
   /**

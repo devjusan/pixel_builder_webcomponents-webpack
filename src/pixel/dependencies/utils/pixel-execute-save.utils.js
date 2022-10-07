@@ -2,6 +2,7 @@ import { HttpClient } from '../../libs/at/http/index.js';
 import { PixelComponent, PixelPage } from '../domain/index.js';
 import { pixelService, toastService } from '../services/index.js';
 import PixelUtils from './pixel.utils.js';
+import * as Rxjs from 'rxjs';
 
 export default class PixelExecuteSaveUtils {
   static #EXCEPTION_LIST = ['widget-panel', 'widget-title', 'widget-button', 'widget-pages-multiplicator-table'];
@@ -27,12 +28,12 @@ export default class PixelExecuteSaveUtils {
     try {
       return HttpClient.get(Url)
         .pipe(
-          rxjs.operators.observeOn(rxjs.asapScheduler),
-          rxjs.operators.take(1),
-          rxjs.operators.map((response) => response.data),
-          rxjs.operators.switchMap((data) =>
+          Rxjs.observeOn(Rxjs.asapScheduler),
+          Rxjs.take(1),
+          Rxjs.map((response) => response.data),
+          Rxjs.switchMap((data) =>
             PixelExecuteSaveUtils.#replicate(data.multiplicator).pipe(
-              rxjs.operators.finalize(() => PixelExecuteSaveUtils.#propagateLoad(data.list))
+              Rxjs.finalize(() => PixelExecuteSaveUtils.#propagateLoad(data.list))
             )
           )
         )
@@ -76,9 +77,9 @@ export default class PixelExecuteSaveUtils {
         savedComponents = [];
       }
 
-      return rxjs
-        .of({ list: savedData, multiplicator: pixelService.getMultiplicator() })
-        .pipe(rxjs.operators.observeOn(rxjs.asapScheduler));
+      return Rxjs.of({ list: savedData, multiplicator: pixelService.getMultiplicator() }).pipe(
+        Rxjs.observeOn(Rxjs.asapScheduler)
+      );
     } catch (error) {
       console.error(error);
     }
@@ -118,7 +119,7 @@ export default class PixelExecuteSaveUtils {
   static #replicate(multiplicator) {
     const componentEl = document.getElementById(PixelExecuteSaveUtils.#getMultiplicatorComponentId());
 
-    return new rxjs.Observable((subscriber) => {
+    return new Rxjs.Observable((subscriber) => {
       if (componentEl) {
         pixelService.setMultiplicator(multiplicator);
         componentEl.replicate();

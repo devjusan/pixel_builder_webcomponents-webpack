@@ -1,9 +1,10 @@
 import { Pixel } from '../index.js';
+import * as Rxjs from 'rxjs';
 
 class ActualPixelService {
   #actual;
   constructor() {
-    this.#actual = new rxjs.BehaviorSubject(null);
+    this.#actual = new Rxjs.BehaviorSubject(null);
   }
 
   getActual() {

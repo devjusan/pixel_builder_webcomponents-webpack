@@ -1,5 +1,6 @@
 import { Dialogs } from '../domain/models/pixel/index.js';
 import { DialogConfig, SimpleDialogConfig } from '../adapters/dialogs.adapter.js';
+import * as Rxjs from 'rxjs';
 
 class DialogsService {
   #state;
@@ -9,7 +10,7 @@ class DialogsService {
       'dialogs-default': () => document.createElement('pixel-dialogs-default'),
     });
 
-    this.stateSubject = new rxjs.BehaviorSubject(this.#state);
+    this.stateSubject = new Rxjs.BehaviorSubject(this.#state);
   }
 
   /**

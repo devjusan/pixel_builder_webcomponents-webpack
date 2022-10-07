@@ -1,12 +1,10 @@
-import { IconUtils, UUIDUtils } from "../../dependencies/utils/index.js";
-import { ListRenderControllerBuilder } from "../../libs/list-render/list-render-controller.js";
-import { SimpleList } from "../../dependencies/domain/dtos/index.js";
-import {
-  ComponentAdapter,
-  ComponentsFactory,
-} from "../../dependencies/index.js";
-import template from "./simple-list.component.html";
-import styles from "./simple-list.component.css";
+import { IconUtils, UUIDUtils } from '../../dependencies/utils/index.js';
+import { ListRenderControllerBuilder } from '../../libs/list-render/list-render-controller.js';
+import { SimpleList } from '../../dependencies/domain/dtos/index.js';
+import { ComponentAdapter, ComponentsFactory } from '../../dependencies/index.js';
+import template from './simple-list.component.html';
+import styles from './simple-list.component.css';
+import * as Rxjs from 'rxjs';
 
 export default class SimpleListComponent extends ComponentAdapter {
   constructor() {
@@ -14,22 +12,20 @@ export default class SimpleListComponent extends ComponentAdapter {
   }
 
   onInit() {
-    this.listSubject = new rxjs.BehaviorSubject([]);
-    this.itemPanelSubject = new rxjs.BehaviorSubject(null);
+    this.listSubject = new Rxjs.BehaviorSubject([]);
+    this.itemPanelSubject = new Rxjs.BehaviorSubject(null);
 
     this.outerPanel = this.querySelector('[data-id="outer-panel"]');
     this.headerPanel = this.querySelector('[data-id="header-panel"]');
-    this.titleEl = this.querySelector("h1");
-    this.headerEl = this.querySelector("header");
-    this.containerEl = this.querySelector("ul");
-    this.buttonEl = this.querySelector(".add-item");
-    this.componentSlotEl = this.querySelector(".component-slot");
+    this.titleEl = this.querySelector('h1');
+    this.headerEl = this.querySelector('header');
+    this.containerEl = this.querySelector('ul');
+    this.buttonEl = this.querySelector('.add-item');
+    this.componentSlotEl = this.querySelector('.component-slot');
   }
 
   componentDidMount() {
-    this.listRenderController = new ListRenderControllerBuilder(
-      this.containerEl
-    )
+    this.listRenderController = new ListRenderControllerBuilder(this.containerEl)
       .withKeyExtractor(this.handleKeyExtractor.bind(this))
       .withContainerCreator(this.handleContainerCreator.bind(this))
       .withOnAfterBindContainerItem(this.handleOnAfterBindContainer.bind(this))
@@ -37,12 +33,8 @@ export default class SimpleListComponent extends ComponentAdapter {
 
     this.listSubject
       .pipe(
-        rxjs.operators.switchMap((list) =>
-          this.itemPanelSubject.pipe(
-            rxjs.operators.map((panelProps) =>
-              list.map((item) => Object.assign({ panelProps }, item))
-            )
-          )
+        Rxjs.switchMap((list) =>
+          this.itemPanelSubject.pipe(Rxjs.map((panelProps) => list.map((item) => Object.assign({ panelProps }, item))))
         ),
         this.takeUntilLifeCycle()
       )
@@ -50,10 +42,7 @@ export default class SimpleListComponent extends ComponentAdapter {
         this.listRenderController.render(list);
       });
 
-    rxjs
-      .fromEvent(this.buttonEl, "click")
-      .pipe(this.takeUntilLifeCycle())
-      .subscribe(this.addItem.bind(this));
+    Rxjs.fromEvent(this.buttonEl, 'click').pipe(this.takeUntilLifeCycle()).subscribe(this.addItem.bind(this));
   }
 
   componentWillUnmount() {
@@ -76,28 +65,21 @@ export default class SimpleListComponent extends ComponentAdapter {
     this.headerPanel.propsDidUpdate(headerPanel);
     this.configureHeaderComponent(headerComponent);
     this.itemPanelSubject.next(itemPanel);
-    this.listSubject.next(
-      options.map((opt) => ({ ...opt, alignment: alignment }))
-    );
+    this.listSubject.next(options.map((opt) => ({ ...opt, alignment: alignment })));
   }
 
   configureHeaderComponent(data) {
     const { typeName, props } = data;
 
-    const shouldRecreate = () =>
-      !this.headerComponentTypename ||
-      this.headerComponentTypename !== typeName;
+    const shouldRecreate = () => !this.headerComponentTypename || this.headerComponentTypename !== typeName;
 
     if (typeName) {
       if (shouldRecreate()) {
-        this.headerComponentEl = ComponentsFactory.getComponentElement(
-          typeName,
-          props
-        );
+        this.headerComponentEl = ComponentsFactory.getComponentElement(typeName, props);
         this.headerComponentTypename = typeName;
 
         if (this.componentSlotEl.hasChildNodes()) {
-          this.componentSlotEl.innerHTML = "";
+          this.componentSlotEl.innerHTML = '';
         }
 
         this.componentSlotEl.appendChild(this.headerComponentEl);
@@ -112,21 +94,17 @@ export default class SimpleListComponent extends ComponentAdapter {
   }
 
   handleContainerCreator(_, item, key, i) {
-    const containerEl = document.createElement("li");
-    const panelContainerEl = document.createElement("widget-base-panel");
-    const titleEl = document.createElement("input");
-    const minusIcon = IconUtils.createIcon(
-      "minus",
-      "20",
-      "var(--background-primary)"
-    );
+    const containerEl = document.createElement('li');
+    const panelContainerEl = document.createElement('widget-base-panel');
+    const titleEl = document.createElement('input');
+    const minusIcon = IconUtils.createIcon('minus', '20', 'var(--background-primary)');
 
     containerEl.panel = panelContainerEl;
     containerEl.titleEl = titleEl;
     containerEl.minusIcon = minusIcon;
 
-    panelContainerEl.setAttribute("data-id", "item-panel");
-    panelContainerEl.classList.add("item-panel");
+    panelContainerEl.setAttribute('data-id', 'item-panel');
+    panelContainerEl.classList.add('item-panel');
     panelContainerEl.appendChild(titleEl);
     panelContainerEl.appendChild(minusIcon);
     containerEl.appendChild(panelContainerEl);
@@ -143,34 +121,29 @@ export default class SimpleListComponent extends ComponentAdapter {
     titleEl.value = value;
 
     return [
-      rxjs
-        .fromEvent(minusIcon, "click")
-        .pipe(this.takeUntilLifeCycle())
-        .subscribe(this.removeItem.bind(this, id)),
+      Rxjs.fromEvent(minusIcon, 'click').pipe(this.takeUntilLifeCycle()).subscribe(this.removeItem.bind(this, id)),
     ];
   }
 
   addItem() {
-    this.listSubject
-      .pipe(rxjs.operators.take(1), this.takeUntilLifeCycle())
-      .subscribe((list) => {
-        const newList = [
-          ...list,
-          {
-            value: this.headerComponentEl.getInputValue(),
-            id: UUIDUtils.getRandomId(),
-          },
-        ];
+    this.listSubject.pipe(Rxjs.take(1), this.takeUntilLifeCycle()).subscribe((list) => {
+      const newList = [
+        ...list,
+        {
+          value: this.headerComponentEl.getInputValue(),
+          id: UUIDUtils.getRandomId(),
+        },
+      ];
 
-        this.listSubject.next(newList);
-      });
+      this.listSubject.next(newList);
+    });
   }
 
   removeItem(id) {
     this.listSubject
       .pipe(
-        rxjs.operators.take(1),
-        rxjs.operators.map((list) => list.filter((lt) => lt.id !== id)),
+        Rxjs.take(1),
+        Rxjs.map((list) => list.filter((lt) => lt.id !== id)),
         this.takeUntilLifeCycle()
       )
       .subscribe((newList) => {

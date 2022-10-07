@@ -1,16 +1,12 @@
-import {
-  ComponentAdapter,
-  IconUtils,
-  modalsService,
-  UUIDUtils,
-} from "../../dependencies/index.js";
-import { Map } from "../../dependencies/domain/dtos/index.js";
-import { ListRenderControllerBuilder } from "../../libs/list-render/index.js";
-import "./map-initializer/map-initializer.js";
-import { PLACEHOLDER } from "./map.constants.js";
-import MapInitializer from "./map-initializer/map-initializer.js";
-import template from "./map.component.html";
-import styles from "./map.component.css";
+import { ComponentAdapter, IconUtils, modalsService, UUIDUtils } from '../../dependencies/index.js';
+import { Map } from '../../dependencies/domain/dtos/index.js';
+import { ListRenderControllerBuilder } from '../../libs/list-render/index.js';
+import './map-initializer/map-initializer.js';
+import { PLACEHOLDER } from './map.constants.js';
+import MapInitializer from './map-initializer/map-initializer.js';
+import template from './map.component.html';
+import styles from './map.component.css';
+import * as Rxjs from 'rxjs';
 
 export default class MapComponent extends ComponentAdapter {
   /** @typedef {{title: string, value: string, key: string}} EntriesList */
@@ -19,10 +15,10 @@ export default class MapComponent extends ComponentAdapter {
 
   /** @typedef {{type: 'name' | 'stroke' | 'fill' | 'size', key: string, item: any,payload: any}} ConnectorType */
 
-  /** @type {rxjs.BehaviorSubject<Array<EntriesList>>} */
+  /** @type {Rxjs.BehaviorSubject<Array<EntriesList>>} */
   #entries;
 
-  /** @type {rxjs.BehaviorSubject<Array<PrintList>>} */
+  /** @type {Rxjs.BehaviorSubject<Array<PrintList>>} */
   #printList;
 
   /** @type {Array<PrintList>} */
@@ -43,7 +39,7 @@ export default class MapComponent extends ComponentAdapter {
   /** @type {MapInitializer} */
   mapEl;
 
-  /** @type {rxjs.BehaviorSubject<Array<ConnectorType>>} */
+  /** @type {Rxjs.BehaviorSubject<Array<ConnectorType>>} */
   connectorSubject;
 
   set tableList(list) {
@@ -62,47 +58,45 @@ export default class MapComponent extends ComponentAdapter {
     this.#geoName = null;
     this.strangeValue = null;
 
-    this.printSubject = new rxjs.BehaviorSubject({ print: null, item: null });
-    this.connectorSubject = new rxjs.BehaviorSubject({
-      type: "name",
+    this.printSubject = new Rxjs.BehaviorSubject({ print: null, item: null });
+    this.connectorSubject = new Rxjs.BehaviorSubject({
+      type: 'name',
       key: null,
       payload: null,
     });
-    this.#entries = new rxjs.BehaviorSubject([]);
-    this.#printList = new rxjs.BehaviorSubject([]);
+    this.#entries = new Rxjs.BehaviorSubject([]);
+    this.#printList = new Rxjs.BehaviorSubject([]);
   }
 
   onInit() {
-    this.entriesBoxEl = this.querySelector(".entries-box");
-    this.entriesAddedList = this.querySelector(".entries-added-list");
-    this.titleEl = this.querySelector("h1");
-    this.hideBtnEl = this.querySelector(".hide-btn");
-    this.mapDescEl = this.querySelector(".map-desc");
-    this.mapEl = this.querySelector("app-map-initializer");
-    this.printContainer = this.querySelector(".print-container");
-    this.printEl = this.querySelector(".print");
-    this.printContainerList = this.querySelector(".print-container-list");
-    this.inputPrintNameEl = this.querySelector(".input-print-name");
-    this.mapComponent = this.querySelector(".map-component");
+    this.entriesBoxEl = this.querySelector('.entries-box');
+    this.entriesAddedList = this.querySelector('.entries-added-list');
+    this.titleEl = this.querySelector('h1');
+    this.hideBtnEl = this.querySelector('.hide-btn');
+    this.mapDescEl = this.querySelector('.map-desc');
+    this.mapEl = this.querySelector('app-map-initializer');
+    this.printContainer = this.querySelector('.print-container');
+    this.printEl = this.querySelector('.print');
+    this.printContainerList = this.querySelector('.print-container-list');
+    this.inputPrintNameEl = this.querySelector('.input-print-name');
+    this.mapComponent = this.querySelector('.map-component');
 
-    this.mapComponent.classList.add("scrollbar", "vertical", "horizontal");
+    this.mapComponent.classList.add('scrollbar', 'vertical', 'horizontal');
   }
 
   componentDidMount() {
-    this.listRenderControllerEntries = new ListRenderControllerBuilder(
-      this.entriesAddedList
-    )
+    this.listRenderControllerEntries = new ListRenderControllerBuilder(this.entriesAddedList)
       .withKeyExtractor((entry, index) => entry.key ?? index)
       .withItemCreator(() => {
-        const itemEl = document.createElement("div");
-        const title = document.createElement("span");
-        const seeIconEl = IconUtils.createIcon("eye-purple", "15");
-        const reorderIconEl = IconUtils.createIcon("ordenate", "15");
-        const editIconEl = IconUtils.createIcon("edit", "15");
-        const closeIconEl = IconUtils.createIcon("delete-icon", "15");
+        const itemEl = document.createElement('div');
+        const title = document.createElement('span');
+        const seeIconEl = IconUtils.createIcon('eye-purple', '15');
+        const reorderIconEl = IconUtils.createIcon('ordenate', '15');
+        const editIconEl = IconUtils.createIcon('edit', '15');
+        const closeIconEl = IconUtils.createIcon('delete-icon', '15');
 
-        itemEl.classList.add("entry-item");
-        reorderIconEl.classList.add("ordenate");
+        itemEl.classList.add('entry-item');
+        reorderIconEl.classList.add('ordenate');
 
         itemEl.appendChild(title);
         itemEl.appendChild(seeIconEl);
@@ -123,13 +117,12 @@ export default class MapComponent extends ComponentAdapter {
         titleEl.textContent = item.title;
         titleEl.title = item.name ?? item.title;
 
-        const subscription = rxjs
-          .fromEvent(seeMapEl, "click")
+        const subscription = Rxjs.fromEvent(seeMapEl, 'click')
           .pipe(this.takeUntilLifeCycle())
           .subscribe(() => {
-            seeMapEl.classList.toggle("opacity");
+            seeMapEl.classList.toggle('opacity');
 
-            if (!seeMapEl.classList.contains("opacity")) {
+            if (!seeMapEl.classList.contains('opacity')) {
               this.mapEl.removeLayer(item.title, item);
             } else {
               this.mapEl.approach(item);
@@ -137,8 +130,7 @@ export default class MapComponent extends ComponentAdapter {
           });
 
         subscription.add(
-          rxjs
-            .fromEvent(removeEl, "click")
+          Rxjs.fromEvent(removeEl, 'click')
             .pipe(this.takeUntilLifeCycle())
             .subscribe(() => {
               this.mapEl.removeLayer(item.title);
@@ -147,13 +139,12 @@ export default class MapComponent extends ComponentAdapter {
         );
 
         subscription.add(
-          rxjs
-            .fromEvent(editEl, "click")
+          Rxjs.fromEvent(editEl, 'click')
             .pipe(this.takeUntilLifeCycle())
             .subscribe(() => {
               this.#geoName = item.title;
 
-              modalsService.open("map-component-helper", {
+              modalsService.open('map-component-helper', {
                 name: this.#geoName,
                 key,
                 subject: this.connectorSubject,
@@ -167,18 +158,16 @@ export default class MapComponent extends ComponentAdapter {
       })
       .build();
 
-    this.listRenderControllerPrint = new ListRenderControllerBuilder(
-      this.printContainerList
-    )
+    this.listRenderControllerPrint = new ListRenderControllerBuilder(this.printContainerList)
       .withKeyExtractor((item, index) => item.key ?? index)
       .withItemCreator(() => {
-        const itemEl = document.createElement("div");
-        const textEl = document.createElement("span");
-        const printIconEl = IconUtils.createIcon("print", "15");
-        const seeIconEl = IconUtils.createIcon("eye-purple", "15");
-        const closeIconEl = IconUtils.createIcon("delete-icon", "15");
+        const itemEl = document.createElement('div');
+        const textEl = document.createElement('span');
+        const printIconEl = IconUtils.createIcon('print', '15');
+        const seeIconEl = IconUtils.createIcon('eye-purple', '15');
+        const closeIconEl = IconUtils.createIcon('delete-icon', '15');
 
-        itemEl.classList.add("entry-item");
+        itemEl.classList.add('entry-item');
 
         itemEl.appendChild(textEl);
         itemEl.appendChild(printIconEl);
@@ -197,17 +186,15 @@ export default class MapComponent extends ComponentAdapter {
 
         textEl.textContent = item.title;
 
-        const subscription = rxjs
-          .fromEvent(seeMapEl, "click")
+        const subscription = Rxjs.fromEvent(seeMapEl, 'click')
           .pipe(this.takeUntilLifeCycle())
           .subscribe(() => {
             this.printSubject.next({ print: item.print, item });
           });
 
-        rxjs
-          .fromEvent(addPrintEl, "click")
+        Rxjs.fromEvent(addPrintEl, 'click')
           .pipe(
-            rxjs.operators.mergeMap(() => this.mapEl.print()),
+            Rxjs.mergeMap(() => this.mapEl.print()),
             this.takeUntilLifeCycle()
           )
           .subscribe((print) => {
@@ -215,8 +202,7 @@ export default class MapComponent extends ComponentAdapter {
           });
 
         subscription.add(
-          rxjs
-            .fromEvent(removeEl, "click")
+          Rxjs.fromEvent(removeEl, 'click')
             .pipe(this.takeUntilLifeCycle())
             .subscribe(() => {
               this.removePrint(key);
@@ -226,16 +212,14 @@ export default class MapComponent extends ComponentAdapter {
       })
       .build();
 
-    rxjs
-      .fromEvent(this.hideBtnEl, "click")
+    Rxjs.fromEvent(this.hideBtnEl, 'click')
       .pipe(this.takeUntilLifeCycle())
       .subscribe(() => {
-        this.classList.toggle("hide-component");
+        this.classList.toggle('hide');
         this.#handleBtnDescription();
       });
 
-    rxjs
-      .fromEvent(this.printEl, "click")
+    Rxjs.fromEvent(this.printEl, 'click')
       .pipe(this.takeUntilLifeCycle())
       .subscribe(() => {
         this.addOrUpdatePrint({
@@ -245,32 +229,19 @@ export default class MapComponent extends ComponentAdapter {
         });
       });
 
-    rxjs
-      .fromEvent(this.inputPrintNameEl, "keyup")
-      .pipe(rxjs.operators.debounceTime(100), this.takeUntilLifeCycle())
+    Rxjs.fromEvent(this.inputPrintNameEl, 'keyup')
+      .pipe(Rxjs.debounceTime(100), this.takeUntilLifeCycle())
       .subscribe((event) => {
         const { value } = event.target;
         this.#handlePrintBtn(value);
       });
 
-    this.#entries
-      .asObservable()
-      .pipe(this.takeUntilLifeCycle())
-      .subscribe(this.renderEntries.bind(this));
-    this.connectorSubject
-      .asObservable()
-      .pipe(this.takeUntilLifeCycle())
-      .subscribe(this.propagateEdits.bind(this));
-    this.printSubject
-      .asObservable()
-      .pipe(this.takeUntilLifeCycle())
-      .subscribe(this.propagatePrint.bind(this));
-    this.#printList
-      .asObservable()
-      .pipe(this.takeUntilLifeCycle())
-      .subscribe(this.renderPrints.bind(this));
+    this.#entries.asObservable().pipe(this.takeUntilLifeCycle()).subscribe(this.renderEntries.bind(this));
+    this.connectorSubject.asObservable().pipe(this.takeUntilLifeCycle()).subscribe(this.propagateEdits.bind(this));
+    this.printSubject.asObservable().pipe(this.takeUntilLifeCycle()).subscribe(this.propagatePrint.bind(this));
+    this.#printList.asObservable().pipe(this.takeUntilLifeCycle()).subscribe(this.renderPrints.bind(this));
 
-    this.#handlePrintBtn("");
+    this.#handlePrintBtn('');
     this.#sortableItems();
   }
 
@@ -320,16 +291,11 @@ export default class MapComponent extends ComponentAdapter {
       return;
     }
 
-    const values = [...connectors]
-      .filter((item) => item.type !== "name")
-      .map((item) => item.inputValue);
-    const titleConnector = connectors.find((item) => item.type === "name");
+    const values = [...connectors].filter((item) => item.type !== 'name').map((item) => item.inputValue);
+    const titleConnector = connectors.find((item) => item.type === 'name');
     this.mapEl.changeLayerName(titleConnector, titleConnector.inputValue);
 
-    this.addOrUpdateEntry({
-      ...titleConnector,
-      title: titleConnector.inputValue,
-    });
+    this.addOrUpdateEntry({ ...titleConnector, title: titleConnector.inputValue });
     this.#geoName = titleConnector.inputValue;
     this.mapEl.changeLayerStyle(
       { ...titleConnector, title: titleConnector.inputValue },
@@ -347,7 +313,7 @@ export default class MapComponent extends ComponentAdapter {
     }
 
     if (!print) {
-      this.printContainer.src = "";
+      this.printContainer.src = '';
 
       return;
     }
@@ -363,10 +329,10 @@ export default class MapComponent extends ComponentAdapter {
    */
   handleEntriesBox(entriesType) {
     switch (entriesType) {
-      case "coords":
+      case 'coords':
         this.renderInputs(PLACEHOLDER.COORDS);
         break;
-      case "geom":
+      case 'geom':
         this.renderInputs(PLACEHOLDER.GEOM);
         break;
     }
@@ -387,28 +353,26 @@ export default class MapComponent extends ComponentAdapter {
           return item;
         })
         .withOnAfterBindItem((itemEl, item, key) => {
-          item.value && itemEl.setAttribute("input.value", item.value);
+          item.value && itemEl.setAttribute('input.value', item.value);
           item.classNames && itemEl.classList.add(...item.classNames);
 
-          if (item.name === "Nome da geometria") {
-            rxjs
-              .fromEvent(itemEl.querySelector("input"), "input")
+          if (item.name === 'Nome da geometria') {
+            Rxjs.fromEvent(itemEl.querySelector('input'), 'input')
               .pipe(this.takeUntilLifeCycle())
               .subscribe((e) => {
                 this.#geoName = e.target.value;
               });
           }
 
-          if (item.element === "p") {
+          if (item.element === 'p') {
             itemEl.textContent = item.name;
             return;
           }
 
-          if (item.element === "span") {
+          if (item.element === 'span') {
             itemEl.textContent = item.name;
 
-            const subscription = rxjs
-              .fromEvent(itemEl, "click")
+            const subscription = Rxjs.fromEvent(itemEl, 'click')
               .pipe(this.takeUntilLifeCycle())
               .subscribe(() => {
                 this.#handleError();
@@ -418,18 +382,15 @@ export default class MapComponent extends ComponentAdapter {
             return subscription;
           }
 
-          itemEl.setAttribute("title", item.name ?? item.title);
-          itemEl.setAttribute("variant", "third");
-          itemEl.setAttribute("input.for", item.name ?? item.title);
-          itemEl.setAttribute("input.id", item.name) ?? item.title;
-          itemEl.setAttribute("input.name", item.name ?? item.title);
-          itemEl.setAttribute("input.placeholder", item.placeholder);
+          itemEl.setAttribute('title', item.name ?? item.title);
+          itemEl.setAttribute('variant', 'third');
+          itemEl.setAttribute('input.for', item.name ?? item.title);
+          itemEl.setAttribute('input.id', item.name) ?? item.title;
+          itemEl.setAttribute('input.name', item.name ?? item.title);
+          itemEl.setAttribute('input.placeholder', item.placeholder);
         });
 
-    this.listRenderController
-      ?.withTarget(this.entriesBoxEl)
-      .build()
-      .render(items);
+    this.listRenderController?.withTarget(this.entriesBoxEl).build().render(items);
   }
 
   /** @param {PrintList[]} prints */
@@ -449,31 +410,27 @@ export default class MapComponent extends ComponentAdapter {
       return;
     }
 
-    this.#entries
-      .pipe(rxjs.operators.take(1), this.takeUntilLifeCycle())
-      .subscribe((entries) => {
-        const index = entries.findIndex((entry) => entry.key === item.key);
-        const newEntries = [...entries];
+    this.#entries.pipe(Rxjs.take(1), this.takeUntilLifeCycle()).subscribe((entries) => {
+      const index = entries.findIndex((entry) => entry.key === item.key);
+      const newEntries = [...entries];
 
-        if (index === -1) {
-          newEntries.push(item);
-        } else {
-          newEntries[index] = item;
-        }
+      if (index === -1) {
+        newEntries.push(item);
+      } else {
+        newEntries[index] = item;
+      }
 
-        this.#entries.next(newEntries);
-      });
+      this.#entries.next(newEntries);
+    });
   }
 
   /** @param {EntriesList} item */
   removeEntry(item) {
-    this.#entries
-      .pipe(rxjs.operators.take(1), this.takeUntilLifeCycle())
-      .subscribe((entries) => {
-        const newEntries = entries.filter((entry) => entry.key !== item.key);
-        this.#entries.next(newEntries);
-        this.mapEl.removeLegend(item);
-      });
+    this.#entries.pipe(Rxjs.take(1), this.takeUntilLifeCycle()).subscribe((entries) => {
+      const newEntries = entries.filter((entry) => entry.key !== item.key);
+      this.#entries.next(newEntries);
+      this.mapEl.removeLegend(item);
+    });
   }
 
   /** @param {EntriesList[]} newEntries */
@@ -484,41 +441,35 @@ export default class MapComponent extends ComponentAdapter {
       title: entry.title ?? entry.nomeTema ?? entry.nome,
     }));
 
-    this.#entries
-      .pipe(rxjs.operators.take(1), this.takeUntilLifeCycle())
-      .subscribe((entries) => {
-        this.#entries.next([...entries, ...mapNewEntries]);
-      });
+    this.#entries.pipe(Rxjs.take(1), this.takeUntilLifeCycle()).subscribe((entries) => {
+      this.#entries.next([...entries, ...mapNewEntries]);
+    });
   }
 
   /** @param {PrintList} print */
   addOrUpdatePrint(print) {
-    this.#printList
-      .pipe(rxjs.operators.take(1), this.takeUntilLifeCycle())
-      .subscribe((prints) => {
-        const printIndex = prints.findIndex((l) => l.key === print.key);
-        const newPrints = [...prints];
+    this.#printList.pipe(Rxjs.take(1), this.takeUntilLifeCycle()).subscribe((prints) => {
+      const printIndex = prints.findIndex((l) => l.key === print.key);
+      const newPrints = [...prints];
 
-        if (printIndex === -1) {
-          newPrints.push(print);
-        } else {
-          newPrints[printIndex] = print;
-        }
+      if (printIndex === -1) {
+        newPrints.push(print);
+      } else {
+        newPrints[printIndex] = print;
+      }
 
-        this.#printList.next(newPrints);
-      });
+      this.#printList.next(newPrints);
+    });
   }
 
   removePrint(key) {
     this.printSubject.next({ print: null, item: null });
 
-    this.#printList
-      .pipe(rxjs.operators.take(1), this.takeUntilLifeCycle())
-      .subscribe((prints) => {
-        const newPrints = prints.filter((item) => item.key !== key);
+    this.#printList.pipe(Rxjs.take(1), this.takeUntilLifeCycle()).subscribe((prints) => {
+      const newPrints = prints.filter((item) => item.key !== key);
 
-        this.#printList.next(newPrints);
-      });
+      this.#printList.next(newPrints);
+    });
   }
 
   getPrintList(rows) {
@@ -529,20 +480,18 @@ export default class MapComponent extends ComponentAdapter {
 
       return acc;
     }, []);
-    const toRelatory = stringList.map(
-      (item, index) => `${index + 1 + rows}&1&${item}`
-    );
+    const toRelatory = stringList.map((item, index) => `${index + 1 + rows}&1&${item}`);
 
-    return { text: toRelatory.join(";") + ";", size: toRelatory.length };
+    return { text: toRelatory.join(';') + ';', size: toRelatory.length };
   }
 
   #sortableItems() {
     $(this.entriesAddedList).sortable({
       containment: this.entriesAddedList,
-      tolerance: "pointer",
-      axis: "y",
+      tolerance: 'pointer',
+      axis: 'y',
       stop: (event, ui) => this.#upgradeAccordionListOrderIfCan(ui.item[0]),
-      handle: ".ordenate",
+      handle: '.ordenate',
     });
   }
 
@@ -551,10 +500,8 @@ export default class MapComponent extends ComponentAdapter {
     if (!itemEl) {
       return;
     }
-    const key =
-      this.listRenderControllerEntries.renderAdapter.extractKeyFromEl(itemEl);
-    const index =
-      this.listRenderControllerEntries.renderAdapter.getIndexByKey(key);
+    const key = this.listRenderControllerEntries.renderAdapter.extractKeyFromEl(itemEl);
+    const index = this.listRenderControllerEntries.renderAdapter.getIndexByKey(key);
 
     this.#moveItemToIndexByKey(key, index);
   }
@@ -564,25 +511,23 @@ export default class MapComponent extends ComponentAdapter {
    * @param {number} index
    */
   #moveItemToIndexByKey(key, index) {
-    this.#entries
-      .pipe(rxjs.operators.take(1), this.takeUntilLifeCycle())
-      .subscribe((entries) => {
-        if (index > entries.length - 1 || index === -1) return;
+    this.#entries.pipe(Rxjs.take(1), this.takeUntilLifeCycle()).subscribe((entries) => {
+      if (index > entries.length - 1 || index === -1) return;
 
-        const item = entries.find((entry) => entry.key === key);
-        const newEntries = [...entries].filter((entry) => entry.key !== key);
+      const item = entries.find((entry) => entry.key === key);
+      const newEntries = [...entries].filter((entry) => entry.key !== key);
 
-        newEntries.splice(index, 0, item);
-        this.#entries.next(newEntries);
-      });
+      newEntries.splice(index, 0, item);
+      this.#entries.next(newEntries);
+    });
   }
 
   #getInputs() {
-    return Array.from(this.entriesBoxEl.querySelectorAll("input")).reduce(
+    return Array.from(this.entriesBoxEl.querySelectorAll('input')).reduce(
       (acc, curInput) => {
         const { value, name } = curInput;
-        const LONGITUDE = "Longitude";
-        const LATITUDE = "Latitude";
+        const LONGITUDE = 'Longitude';
+        const LATITUDE = 'Latitude';
 
         if (name === LONGITUDE || name === LATITUDE) {
           return {
@@ -593,35 +538,23 @@ export default class MapComponent extends ComponentAdapter {
           };
         }
 
-        return {
-          ...acc,
-          title: this.#geoName,
-          value,
-          key: UUIDUtils.getRandomId(),
-        };
+        return { ...acc, title: this.#geoName, value, key: UUIDUtils.getRandomId() };
       },
       { value: [] }
     );
   }
 
   #handleBtnDescription() {
-    this.hideBtnEl.textContent = this.classList.contains("hide-component ")
-      ? "Mostrar entradas"
-      : "Ocultar entradas";
+    this.hideBtnEl.textContent = this.classList.contains('hide') ? 'Mostrar entradas' : 'Ocultar entradas';
   }
 
   #handleError() {
-    this.#hasError = Array.from(
-      this.entriesBoxEl.querySelectorAll("input")
-    ).some((input) => input.value === "");
-    const container = this.querySelector(".error-container");
+    this.#hasError = Array.from(this.entriesBoxEl.querySelectorAll('input')).some((input) => input.value === '');
+    const container = this.querySelector('.error-container');
 
     if (this.#hasError) {
-      container.classList.add("on-error", "show-error");
-      setTimeout(
-        () => container.classList.remove("on-error", "show-error"),
-        5000
-      );
+      container.classList.add('on-error', 'show-error');
+      setTimeout(() => container.classList.remove('on-error', 'show-error'), 5000);
     }
 
     return this.#hasError;
@@ -629,9 +562,9 @@ export default class MapComponent extends ComponentAdapter {
 
   #handlePrintBtn(value) {
     if (value.length > 0) {
-      this.printEl.removeAttribute("disabled");
+      this.printEl.removeAttribute('disabled');
     } else {
-      this.printEl.setAttribute("disabled", "true");
+      this.printEl.setAttribute('disabled', 'true');
     }
   }
 }

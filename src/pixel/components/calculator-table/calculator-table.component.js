@@ -2,29 +2,24 @@ import {
   BaseCalculatorTable,
   CalculatorTable,
   CalculatorTableSelectedItemProps,
-} from "../../dependencies/domain/dtos/index.js";
-import {
-  ArrayUtils,
-  ComponentAdapter,
-  IconUtils,
-  pixelService,
-  PixelUtils,
-} from "../../dependencies/index.js";
-import { ListRenderControllerBuilder } from "../../libs/list-render/list-render-controller.js";
-import template from "./calculator-table.component.html";
-import styles from "./calculator-table.component.css";
+} from '../../dependencies/domain/dtos/index.js';
+import { ArrayUtils, ComponentAdapter, IconUtils, pixelService, PixelUtils } from '../../dependencies/index.js';
+import { ListRenderControllerBuilder } from '../../libs/list-render/list-render-controller.js';
+import template from './calculator-table.component.html';
+import styles from './calculator-table.component.css';
+import * as Rxjs from 'rxjs';
 
 export default class CalculatorTableComponent extends ComponentAdapter {
   /** @typedef {'+' | '-' | '*' | '/'} OperatorProps */
   /** @typedef {{key: string, operator: OperatorProps, selectedItems: {text: string, id: string}[]}} SelectedItem */
 
   /**
-   * @type {rxjs.BehaviorSubject}
+   * @type {Rxjs.BehaviorSubject}
    */
   #keyUpHandler;
 
   /**
-   * @type {rxjs.BehaviorSubject}
+   * @type {Rxjs.BehaviorSubject}
    */
   #selectedItemsSubject;
 
@@ -34,7 +29,7 @@ export default class CalculatorTableComponent extends ComponentAdapter {
   #selectedItems;
 
   /**
-   * @type {rxjs.Subscription}
+   * @type {Rxjs.Subscription}
    */
   #keyUpSubscription;
 
@@ -47,7 +42,7 @@ export default class CalculatorTableComponent extends ComponentAdapter {
   /** @type {number} */
   #valuesList;
 
-  #ICONS = { RIGHT: "✓" };
+  #ICONS = { RIGHT: '✓' };
 
   get tableData() {
     return this.#tableData;
@@ -75,8 +70,8 @@ export default class CalculatorTableComponent extends ComponentAdapter {
 
   constructor() {
     super(template, styles);
-    this.#keyUpHandler = new rxjs.BehaviorSubject([]);
-    this.#selectedItemsSubject = new rxjs.BehaviorSubject([]);
+    this.#keyUpHandler = new Rxjs.BehaviorSubject([]);
+    this.#selectedItemsSubject = new Rxjs.BehaviorSubject([]);
     this.#selectedItems = [];
   }
 
@@ -85,29 +80,23 @@ export default class CalculatorTableComponent extends ComponentAdapter {
   }
 
   onInit() {
-    this.titleEl = this.querySelector("h3");
-    this.descriptionEl = this.querySelector("p");
-    this.tableEl = this.querySelector("table");
+    this.titleEl = this.querySelector('h3');
+    this.descriptionEl = this.querySelector('p');
+    this.tableEl = this.querySelector('table');
   }
 
   componentDidMount() {
-    this.#keyUpHandler
-      .pipe(this.takeUntilLifeCycle())
-      .subscribe(this.#handleKeyUpEvents.bind(this));
+    this.#keyUpHandler.pipe(this.takeUntilLifeCycle()).subscribe(this.#handleKeyUpEvents.bind(this));
 
-    this.listRenderControllerTableRows = new ListRenderControllerBuilder(
-      this.tableEl
-    )
+    this.listRenderControllerTableRows = new ListRenderControllerBuilder(this.tableEl)
       .withKeyExtractor((item, index) => item.key ?? index)
       .withItemCreator(this.handleItemCreator.bind(this))
       .withOnAfterBindItem(this.handleAfterBindItem.bind(this))
       .build();
 
-    this.#selectedItemsSubject
-      .pipe(this.takeUntilLifeCycle())
-      .subscribe((selectedItems) => {
-        this.renderTable(selectedItems);
-      });
+    this.#selectedItemsSubject.pipe(this.takeUntilLifeCycle()).subscribe((selectedItems) => {
+      this.renderTable(selectedItems);
+    });
   }
 
   componentWillUnmount() {
@@ -127,12 +116,9 @@ export default class CalculatorTableComponent extends ComponentAdapter {
     this.titleEl.textContent = title;
     this.descriptionEl.textContent = description;
 
-    this.changeTextAlignment(textPosition, {
-      title: this.titleEl,
-      description: this.descriptionEl,
-    });
+    this.changeTextAlignment(textPosition, { title: this.titleEl, description: this.descriptionEl });
 
-    const tableEls = Array.from(document.querySelectorAll("table tr > *"));
+    const tableEls = Array.from(document.querySelectorAll('table tr > *'));
     this.changeContentAlignment(contentPosition, tableEls);
 
     this.#selectedItems = selectedItems;
@@ -147,9 +133,7 @@ export default class CalculatorTableComponent extends ComponentAdapter {
   }
 
   renderTable(selectedItems) {
-    this.listRenderControllerTableRows?.render(
-      ArrayUtils.chunk([...selectedItems], 3)
-    );
+    this.listRenderControllerTableRows?.render(ArrayUtils.chunk([...selectedItems], 3));
   }
 
   /**
@@ -166,8 +150,8 @@ export default class CalculatorTableComponent extends ComponentAdapter {
 
     this.valuesList = valuesList;
 
-    this.tableData = { body: "", head: "", size: 0 };
-    let tableData = "";
+    this.tableData = { body: '', head: '', size: 0 };
+    let tableData = '';
     for (let j = 0; j < converttedValues.length; j++) {
       const values = converttedValues[j];
       const inputs = this.inputList[j];
@@ -179,26 +163,22 @@ export default class CalculatorTableComponent extends ComponentAdapter {
       }
     }
 
-    this.tableData = {
-      body: tableData,
-      head: this.tableDataHead,
-      size: this.tableDataHead.split(";").length,
-    };
+    this.tableData = { body: tableData, head: this.tableDataHead, size: this.tableDataHead.split(';').length };
   }
 
   /**
    * @param {number} n
    */
   customInitialNumberTableHead(n) {
-    const list = this.tableDataHead.split(";").map((line) => {
-      const [row, column, name] = line.split("&");
+    const list = this.tableDataHead.split(';').map((line) => {
+      const [row, column, name] = line.split('&');
 
       return `${row}&${Number(column) + Number(n)}&${name}`;
     });
 
     Array.prototype.pop.apply(list);
 
-    return list.join(";") + ";";
+    return list.join(';') + ';';
   }
   /**
    *
@@ -206,7 +186,7 @@ export default class CalculatorTableComponent extends ComponentAdapter {
    * @returns
    */
   handleItemCreator(item) {
-    const itemEl = document.createElement("tr");
+    const itemEl = document.createElement('tr');
     return itemEl;
   }
 
@@ -217,10 +197,10 @@ export default class CalculatorTableComponent extends ComponentAdapter {
    * @returns
    */
   handleAfterBindItem(itemEl, items) {
-    itemEl.innerHTML = "";
+    itemEl.innerHTML = '';
     for (let i = 0; i < items.length; i++) {
-      const operationContainer = document.createElement("div");
-      const operationResultEl = document.createElement("div");
+      const operationContainer = document.createElement('div');
+      const operationResultEl = document.createElement('div');
       const item = items[i];
       const cell = itemEl.insertCell();
 
@@ -244,15 +224,13 @@ export default class CalculatorTableComponent extends ComponentAdapter {
     switch (operator) {
       case BaseCalculatorTable.operatorType.addition:
         value = selectedItems.reduce(
-          (acc, current) =>
-            parseFloat(PixelUtils.extractValue(current.id)) + parseFloat(acc),
+          (acc, current) => parseFloat(PixelUtils.extractValue(current.id)) + parseFloat(acc),
           0
         );
         break;
       case BaseCalculatorTable.operatorType.multiplication:
         value = selectedItems.reduce(
-          (acc, current) =>
-            parseFloat(parseFloat(acc) * PixelUtils.extractValue(current.id)),
+          (acc, current) => parseFloat(parseFloat(acc) * PixelUtils.extractValue(current.id)),
           1
         );
         break;
@@ -271,7 +249,7 @@ export default class CalculatorTableComponent extends ComponentAdapter {
         break;
     }
 
-    return value.toFixed(2).replace(".00", "");
+    return value.toFixed(2).replace('.00', '');
   }
 
   /**
@@ -281,14 +259,11 @@ export default class CalculatorTableComponent extends ComponentAdapter {
     if (!selectedItem) return;
     const { selectedItems } = selectedItem;
     const item = selectedItem;
-    const spanCalc = document.createElement("span");
-    spanCalc.classList.add("calculation-header");
+    const spanCalc = document.createElement('span');
+    spanCalc.classList.add('calculation-header');
     for (let i = 0; i < selectedItems.length; i++) {
       const text = document.createTextNode(
-        selectedItems[i]?.text +
-          "(" +
-          PixelUtils.extractValue(selectedItems[i]?.id) +
-          ")"
+        selectedItems[i]?.text + '(' + PixelUtils.extractValue(selectedItems[i]?.id) + ')'
       );
       spanCalc.appendChild(text);
       if (i < selectedItems.length - 1) {
@@ -331,7 +306,7 @@ export default class CalculatorTableComponent extends ComponentAdapter {
     return selectedItems.reduce(
       (acc, selectedItem) => {
         const componentEl = PixelUtils.getComponentDOMRef(selectedItem.id);
-        const hasInput = componentEl.querySelector("input");
+        const hasInput = componentEl.querySelector('input');
         if (!hasInput) {
           acc.withoutEvent.push(selectedItem);
         } else {
@@ -350,13 +325,8 @@ export default class CalculatorTableComponent extends ComponentAdapter {
    * @returns
    */
   #bindKeyUpEvent(componentEl) {
-    return rxjs
-      .fromEvent(componentEl, "keyup")
-      .pipe(
-        rxjs.operators.debounceTime(250),
-        rxjs.operators.distinctUntilChanged(),
-        this.takeUntilLifeCycle()
-      )
+    return Rxjs.fromEvent(componentEl, 'keyup')
+      .pipe(Rxjs.debounceTime(250), Rxjs.distinctUntilChanged(), this.takeUntilLifeCycle())
       .subscribe((e) => {
         this.#selectedItemsSubject.next([...this.#selectedItems]);
       });
@@ -364,21 +334,21 @@ export default class CalculatorTableComponent extends ComponentAdapter {
 
   #handleCreateIcon(operator) {
     if (BaseCalculatorTable.operatorType.addition === operator) {
-      return IconUtils.createIcon("plus", 11);
+      return IconUtils.createIcon('plus', 11);
     } else if (BaseCalculatorTable.operatorType.subtraction === operator) {
-      return IconUtils.createIcon("minus", 11);
+      return IconUtils.createIcon('minus', 11);
     } else if (BaseCalculatorTable.operatorType.multiplication === operator) {
-      return IconUtils.createIcon("multiplication", 11);
+      return IconUtils.createIcon('multiplication', 11);
     } else if (BaseCalculatorTable.operatorType.division === operator) {
-      return IconUtils.createIcon("slash", 11);
+      return IconUtils.createIcon('slash', 11);
     }
   }
 
   #withGetInputsValues() {
-    const trs = Array.from(this.querySelectorAll("table thead tr"));
+    const trs = Array.from(this.querySelectorAll('table thead tr'));
     const values = trs
       .map((tr) => {
-        const inputs = Array.from(tr.querySelectorAll("input"));
+        const inputs = Array.from(tr.querySelectorAll('input'));
         return inputs.map((input) => {
           return { value: input.value };
         });

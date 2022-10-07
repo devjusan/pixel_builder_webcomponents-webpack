@@ -1,8 +1,7 @@
-import { loadRequirements } from "../../libs/at/core/index.js";
-import { ComponentAdapter } from "../../dependencies/index.js";
-import { Title } from "../../dependencies/domain/dtos/index.js";
-import template from "./title.component.html";
-import styles from "./title.component.css";
+import { ComponentAdapter } from '../../dependencies/index.js';
+import { Title } from '../../dependencies/domain/dtos/index.js';
+import template from './title.component.html';
+import styles from './title.component.css';
 
 export default class TitleComponent extends ComponentAdapter {
   constructor() {
@@ -10,9 +9,9 @@ export default class TitleComponent extends ComponentAdapter {
   }
 
   onInit() {
-    this.titleEl = this.querySelector("h1");
+    this.titleEl = this.querySelector('h1');
 
-    this.titleEl.setAttribute("id", this.getComponentId());
+    this.titleEl.setAttribute('id', this.getComponentId());
   }
 
   /**
@@ -36,14 +35,14 @@ export default class TitleComponent extends ComponentAdapter {
    */
   #handleTitleSize(size) {
     switch (size) {
-      case "small":
-        this.titleEl.style.fontSize = "18px";
+      case 'small':
+        this.titleEl.style.fontSize = '18px';
         break;
-      case "medium":
-        this.titleEl.style.fontSize = "25px";
+      case 'medium':
+        this.titleEl.style.fontSize = '25px';
         break;
-      case "large":
-        this.titleEl.style.fontSize = "40px";
+      case 'large':
+        this.titleEl.style.fontSize = '40px';
         break;
     }
   }

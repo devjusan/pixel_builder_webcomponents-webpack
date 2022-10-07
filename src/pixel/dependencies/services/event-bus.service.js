@@ -1,6 +1,8 @@
+import * as Rxjs from 'rxjs';
+
 class EventBusService {
   constructor() {
-    this.eventEmitter = new rxjs.Subject();
+    this.eventEmitter = new Rxjs.Subject();
   }
 
   emit(key, payload) {
@@ -9,8 +11,8 @@ class EventBusService {
 
   on(...keys) {
     return this.eventEmitter.pipe(
-      rxjs.operators.filter((x) => keys.includes(x.key)),
-      rxjs.operators.map((x) => x.payload)
+      Rxjs.filter((x) => keys.includes(x.key)),
+      Rxjs.map((x) => x.payload)
     );
   }
 }

@@ -1,7 +1,8 @@
-import { ListRenderControllerBuilder } from "../../../libs/list-render/index.js";
-import { WebComponent } from "../../../libs/at/core/index.js";
-import template from "./box-info.html";
-import styles from "./box-info.css";
+import { ListRenderControllerBuilder } from '../../../libs/list-render/index.js';
+import { WebComponent } from '../../../libs/at/core/index.js';
+import template from './box-info.html';
+import styles from './box-info.css';
+import * as Rxjs from 'rxjs';
 
 export default class BoxInfo extends WebComponent {
   #listSubject;
@@ -9,25 +10,23 @@ export default class BoxInfo extends WebComponent {
   constructor() {
     super(template, styles);
 
-    this.#listSubject = new rxjs.BehaviorSubject([]);
+    this.#listSubject = new Rxjs.BehaviorSubject([]);
   }
 
   onInit() {
-    this.containerEl = this.querySelector(".box-info-container");
-    this.minimizeEl = this.querySelector(".box-info-handler");
+    this.containerEl = this.querySelector('.box-info-container');
+    this.minimizeEl = this.querySelector('.box-info-handler');
 
-    this.classList.toggle("box-info-minimize");
+    this.classList.toggle('box-info-minimize');
   }
 
   componentDidMount() {
-    this.listRenderController = new ListRenderControllerBuilder(
-      this.containerEl
-    )
+    this.listRenderController = new ListRenderControllerBuilder(this.containerEl)
       .withKeyExtractor((item, index) => item.key ?? item.gid ?? index)
       .withItemCreator((item) => {
-        const itemEl = document.createElement("li");
-        const titleEl = document.createElement("h4");
-        const backgroundEl = document.createElement("span");
+        const itemEl = document.createElement('li');
+        const titleEl = document.createElement('h4');
+        const backgroundEl = document.createElement('span');
 
         itemEl.appendChild(backgroundEl);
         itemEl.appendChild(titleEl);
@@ -51,30 +50,26 @@ export default class BoxInfo extends WebComponent {
   }
 
   addLegendOrUpdate(legend) {
-    this.#listSubject
-      .pipe(rxjs.operators.take(1), this.takeUntilLifeCycle())
-      .subscribe((legends) => {
-        const legendIndex = legends.findIndex((l) => l.key === legend.key);
-        const newLegends = [...legends];
+    this.#listSubject.pipe(Rxjs.take(1), this.takeUntilLifeCycle()).subscribe((legends) => {
+      const legendIndex = legends.findIndex((l) => l.key === legend.key);
+      const newLegends = [...legends];
 
-        if (legendIndex === -1) {
-          newLegends.push(legend);
-        } else {
-          newLegends[legendIndex] = legend;
-        }
+      if (legendIndex === -1) {
+        newLegends.push(legend);
+      } else {
+        newLegends[legendIndex] = legend;
+      }
 
-        this.#listSubject.next(newLegends);
-      });
+      this.#listSubject.next(newLegends);
+    });
   }
 
   removeLegend(item) {
-    this.#listSubject
-      .pipe(rxjs.operators.take(1), this.takeUntilLifeCycle())
-      .subscribe((legends) => {
-        const newLegends = legends.filter((legend) => legend.key !== item.key);
+    this.#listSubject.pipe(Rxjs.take(1), this.takeUntilLifeCycle()).subscribe((legends) => {
+      const newLegends = legends.filter((legend) => legend.key !== item.key);
 
-        this.#listSubject.next(newLegends);
-      });
+      this.#listSubject.next(newLegends);
+    });
   }
 
   /**
@@ -83,16 +78,13 @@ export default class BoxInfo extends WebComponent {
    * */
   #handleIcon(backgroundEl, item) {
     backgroundEl.style.borderColor = item.color;
-    backgroundEl.style.backgroundColor = this.#convertHexToRGBA(
-      item.fill,
-      item.opacity
-    );
-    backgroundEl.style.borderStyle = item.lineDash ? "dashed" : "solid";
+    backgroundEl.style.backgroundColor = this.#convertHexToRGBA(item.fill, item.opacity);
+    backgroundEl.style.borderStyle = item.lineDash ? 'dashed' : 'solid';
   }
 
   #convertHexToRGBA(hex, opacity) {
     if (!hex || !opacity) {
-      return "none";
+      return 'none';
     }
 
     const r = parseInt(hex.slice(1, 3), 16);
@@ -103,4 +95,4 @@ export default class BoxInfo extends WebComponent {
   }
 }
 
-customElements.define("app-box-info", BoxInfo);
+customElements.define('app-box-info', BoxInfo);

@@ -1,7 +1,9 @@
+import * as Rxjs from 'rxjs';
+
 class PixelTokenService {
   constructor() {
     this.token = null;
-    this.tokenSubject = new rxjs.BehaviorSubject(this.token);
+    this.tokenSubject = new Rxjs.BehaviorSubject(this.token);
   }
 
   /**
@@ -14,7 +16,7 @@ class PixelTokenService {
 
   getToken() {
     if (!this.token) {
-      throw new Error("Token is not set");
+      throw new Error('Token is not set');
     }
 
     return this.token;
@@ -22,13 +24,13 @@ class PixelTokenService {
 
   getTokenObservable() {
     return this.tokenSubject.asObservable().pipe(
-      rxjs.operatores.tap((token) => {
+      Rxjs.tap((token) => {
         if (!token) {
-          return rxjs.throwError("Token is not set");
+          return Rxjs.throwError(() => Error('Token is not set'));
         }
       }),
-      operators.distinctUntilChanged(),
-      operators.shareReplay(1)
+      Rxjs.distinctUntilChanged(),
+      Rxjs.shareReplay(1)
     );
   }
 

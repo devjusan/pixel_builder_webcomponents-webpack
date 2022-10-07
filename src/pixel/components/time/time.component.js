@@ -1,8 +1,7 @@
-import { loadRequirements } from "../../libs/at/core/index.js";
-import { ComponentAdapter } from "../../dependencies/index.js";
-import { Time } from "../../dependencies/domain/dtos/index.js";
-import template from "./time.component.html";
-import styles from "./time.component.css";
+import { ComponentAdapter } from '../../dependencies/index.js';
+import { Time } from '../../dependencies/domain/dtos/index.js';
+import template from './time.component.html';
+import styles from './time.component.css';
 
 export default class TimeComponent extends ComponentAdapter {
   constructor() {
@@ -10,11 +9,11 @@ export default class TimeComponent extends ComponentAdapter {
   }
 
   onInit() {
-    this.componentId = this.getAttribute("id");
+    this.componentId = this.getAttribute('id');
 
-    this.descriptionEl = this.querySelector("p");
-    this.inputEl = this.querySelector("input");
-    this.inputEl.setAttribute("id", this.componentId);
+    this.descriptionEl = this.querySelector('p');
+    this.inputEl = this.querySelector('input');
+    this.inputEl.setAttribute('id', this.componentId);
   }
 
   /**

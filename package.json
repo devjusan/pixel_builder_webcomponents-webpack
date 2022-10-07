@@ -33,6 +33,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.13.10",
-    "node-polyfill-webpack-plugin": "^2.0.1"
+    "node-polyfill-webpack-plugin": "^2.0.1",
+    "rxjs": "^7.5.7"
+
   }
 }

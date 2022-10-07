@@ -1,10 +1,8 @@
-import {
-  DialogConfig,
-  SimpleDialogConfig,
-} from "../../../adapters/dialogs.adapter.js";
-import { DialogAdapter } from "../../../index.js";
-import template from "./dialogs-default.html";
-import styles from "./dialogs-default.css";
+import { DialogConfig, SimpleDialogConfig } from '../../../adapters/dialogs.adapter.js';
+import { DialogAdapter } from '../../../index.js';
+import template from './dialogs-default.html';
+import styles from './dialogs-default.css';
+import * as Rxjs from 'rxjs';
 
 export default class DefaultDialog extends DialogAdapter {
   constructor() {
@@ -12,10 +10,10 @@ export default class DefaultDialog extends DialogAdapter {
   }
 
   onInit() {
-    this.titleEl = this.querySelector(".title");
-    this.descriptionEl = this.querySelector(".description");
-    this.primaryButtonEl = this.querySelector("button.primary");
-    this.secondaryButtonEl = this.querySelector("button.secondary");
+    this.titleEl = this.querySelector('.title');
+    this.descriptionEl = this.querySelector('.description');
+    this.primaryButtonEl = this.querySelector('button.primary');
+    this.secondaryButtonEl = this.querySelector('button.secondary');
   }
 
   componentDidMount() {
@@ -31,13 +29,11 @@ export default class DefaultDialog extends DialogAdapter {
     this.primaryButtonEl.textContent = primaryAction.title;
     this.secondaryButtonEl.textContent = secondaryAction.title;
 
-    rxjs
-      .fromEvent(this.primaryButtonEl, "click")
+    Rxjs.fromEvent(this.primaryButtonEl, 'click')
       .pipe(this.takeUntilLifeCycle())
       .subscribe(primaryAction.fn.bind(this, this.primaryButtonEl));
 
-    rxjs
-      .fromEvent(this.secondaryButtonEl, "click")
+    Rxjs.fromEvent(this.secondaryButtonEl, 'click')
       .pipe(this.takeUntilLifeCycle())
       .subscribe(secondaryAction.fn.bind(this, this.secondaryButtonEl));
   }
@@ -49,13 +45,12 @@ export default class DefaultDialog extends DialogAdapter {
     this.descriptionEl.textContent = description;
 
     this.primaryButtonEl.textContent = action.title;
-    this.secondaryButtonEl.style.setProperty("display", "none");
+    this.secondaryButtonEl.style.setProperty('display', 'none');
 
-    rxjs
-      .fromEvent(this.primaryButtonEl, "click")
+    Rxjs.fromEvent(this.primaryButtonEl, 'click')
       .pipe(this.takeUntilLifeCycle())
       .subscribe(action.handler.bind(this, this.primaryButtonEl));
   }
 }
 
-customElements.define("pixel-dialogs-default", DefaultDialog);
+customElements.define('pixel-dialogs-default', DefaultDialog);

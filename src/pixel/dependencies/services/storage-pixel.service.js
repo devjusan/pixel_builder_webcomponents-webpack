@@ -1,8 +1,9 @@
 import { HttpClient } from '../../libs/at/http/index.js';
 import tokenService from './token.service.js';
+import * as Rxjs from 'rxjs';
 
 class StoragePixelService {
-  /** @typedef {rxjs.BehaviorSubject<{storageName: string, storageId: number, folderId: number} | {}> } SelectedStorage */
+  /** @typedef {Rxjs.BehaviorSubject<{storageName: string, storageId: number, folderId: number} | {}> } SelectedStorage */
   /** @typedef {'get_storage' | 'create_storage'| 'get_contents/folder'| 'open_file'| 'create_folder'| 'save_files'} Actions */
 
   /** @type {SelectedStorage} */
@@ -18,7 +19,7 @@ class StoragePixelService {
   };
 
   constructor() {
-    this.#selectedStorage = new rxjs.BehaviorSubject({});
+    this.#selectedStorage = new Rxjs.BehaviorSubject({});
   }
 
   getStoragesObservable() {
@@ -41,7 +42,7 @@ class StoragePixelService {
    */
   getContentsObservable(storageId, FolderId, select) {
     return this.#getContents(storageId, FolderId).pipe(
-      rxjs.operators.map((contents) => (select ? contents?.[select] : contents) ?? [])
+      Rxjs.map((contents) => (select ? contents?.[select] : contents) ?? [])
     );
   }
 
@@ -50,7 +51,7 @@ class StoragePixelService {
    */
   openFile(data) {
     return HttpClient.post(this.#url(this.#ACTIONS.OPEN_FILE), data).pipe(
-      rxjs.operators.map((response) => response.data.ObjectResult ?? [])
+      Rxjs.map((response) => response.data.ObjectResult ?? [])
     );
   }
 
@@ -80,15 +81,15 @@ class StoragePixelService {
       storageId,
       FolderId,
     }).pipe(
-      rxjs.operators.map((response) => response.data?.ObjectResult ?? []),
-      rxjs.operators.shareReplay(1)
+      Rxjs.map((response) => response.data?.ObjectResult ?? []),
+      Rxjs.shareReplay(1)
     );
   }
 
   #getStorages() {
     return HttpClient.post(this.#url(this.#ACTIONS.GET_STORAGE)).pipe(
-      rxjs.operators.map((response) => response.data?.ObjectResult ?? []),
-      rxjs.operators.shareReplay(1)
+      Rxjs.map((response) => response.data?.ObjectResult ?? []),
+      Rxjs.shareReplay(1)
     );
   }
 
