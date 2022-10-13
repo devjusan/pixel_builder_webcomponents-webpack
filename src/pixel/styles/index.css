@@ -1,5 +1,5 @@
 widget-stage {
-  font-family: var(--fontFamily-primary);
+  font-family: var(--fontFamily-primary) !important;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -10,9 +10,20 @@ widget-stage {
 widget-stage h1,
 widget-stage h2,
 widget-stage h3,
-widget-stage h4 {
+widget-stage h4
+ {
   padding: 0;
   margin: 0;
+}
+
+widget-stage h5, widget-map h6
+ {
+  padding: 0;
+  margin: 0;
+}
+
+widget-map h6 {
+  font-size: 12px !important;
 }
 
 widget-stage input[type='number'],

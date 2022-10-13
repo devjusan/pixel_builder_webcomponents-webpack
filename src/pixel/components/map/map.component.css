@@ -3,6 +3,7 @@ widget-map {
   background: var(--pixel-background-color);
 }
 
+
 widget-map .map-component {
   position: relative;
   width: 100%;
@@ -38,8 +39,8 @@ widget-map .container-list {
 
 widget-map h1,
 widget-map h2 {
-  margin: 1rem 2rem;
-  margin-bottom: 0;
+  margin: 1rem 2rem !important;
+  margin-bottom: 0 !important;
 }
 
 widget-map .entries-box {
